@@ -88,15 +88,15 @@ class Player:
         bet_names = {b.name for b in self.bets_on_table}
         return bool(bet_names.intersection(bets_to_check))
 
-    def get_bet(self, bet_name: str, bet_subname: str = "") -> Bet:
-        """returns first betting object matching bet_name and bet_subname.
-        If bet_subname="Any", returns first betting object matching bet_name"""
-        if bet_subname == "Any":
+    def get_bet(self, bet_name: str, bet_sub_name: str = "") -> Bet:
+        """returns first betting object matching bet_name and bet_sub_name.
+        If bet_sub_name="Any", returns first betting object matching bet_name"""
+        if bet_sub_name == "Any":
             bet_name_list: list[str] = [b.name for b in self.bets_on_table]
             ind: int = bet_name_list.index(bet_name)
         else:
-            bet_name_subname_list: list[list[str]] = [[b.name, b.sub_name] for b in self.bets_on_table]
-            ind = bet_name_subname_list.index([bet_name, bet_subname])
+            bet_name_sub_name_list: list[list[str]] = [[b.name, b.sub_name] for b in self.bets_on_table]
+            ind = bet_name_sub_name_list.index([bet_name, bet_sub_name])
         return self.bets_on_table[ind]
 
     def num_bet(self, *bets_to_check: str) -> int:
@@ -104,9 +104,9 @@ class Player:
         bet_names = [b.name for b in self.bets_on_table]
         return sum([i in bets_to_check for i in bet_names])
 
-    def remove_if_present(self, bet_name: str, bet_subname: str = "") -> None:
+    def remove_if_present(self, bet_name: str, bet_sub_name: str = "") -> None:
         if self.has_bet(bet_name):
-            self.remove(self.get_bet(bet_name, bet_subname))
+            self.remove(self.get_bet(bet_name, bet_sub_name))
 
     def add_strategy_bets(self) -> None:
         """ Implement the given betting strategy """
