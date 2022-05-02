@@ -5,7 +5,7 @@ from numpy import random as r
 
 class Dice:
     """
-    Simulate the rolling of a dice
+    Simulate the rolling of two dice
 
     Attributes
     ----------
