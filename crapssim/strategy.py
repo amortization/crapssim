@@ -632,7 +632,7 @@ def dice_doctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[
 #     return strategy_info
 
 
-def place68_dontcome2odds(player: 'Player', table: 'Table') -> None:
+def place68_dont_come2odds(player: 'Player', table: 'Table') -> None:
     """ Place the 6 and 8, bet don't come with 2x odds.
 
         Parameters
