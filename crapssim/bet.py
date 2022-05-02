@@ -421,12 +421,12 @@ class CAndE(Bet):
         return status, win_amount
 
 
-class Hardway(Bet):
+class HardWay(Bet):
     """
     Attributes
     ----------
     number : int
-        The relevant number that the bet wins and loses on (for hardways)
+        The relevant number that the bet wins and loses on (for hard ways)
     winning_result : list(int)
         The combination of dice the bet wins on
     """
@@ -449,7 +449,7 @@ class Hardway(Bet):
         return status, win_amount
 
 
-class Hard4(Hardway):
+class Hard4(HardWay):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
         self.name: str = "Hard4"
@@ -458,7 +458,7 @@ class Hard4(Hardway):
         self.payout_ratio: int = 7
 
 
-class Hard6(Hardway):
+class Hard6(HardWay):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
         self.name: str = "Hard6"
@@ -467,7 +467,7 @@ class Hard6(Hardway):
         self.payout_ratio: int = 9
 
 
-class Hard8(Hardway):
+class Hard8(HardWay):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
         self.name: str = "Hard8"
@@ -476,7 +476,7 @@ class Hard8(Hardway):
         self.payout_ratio: int = 9
 
 
-class Hard10(Hardway):
+class Hard10(HardWay):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
         self.name: str = "Hard10"
