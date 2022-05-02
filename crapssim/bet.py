@@ -78,7 +78,7 @@ class Bet(ABC):
 
 
 """
-Passline and Come bets
+Pass Line and Come bets
 """
 
 
@@ -125,7 +125,7 @@ class Come(PassLine):
 
 
 """
-Passline/Come bet odds
+Pass Line/Come bet odds
 """
 
 
