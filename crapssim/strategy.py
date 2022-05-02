@@ -154,6 +154,8 @@ def place(player: 'Player', table: 'Table', skip_point: bool = True, numbers: se
             If True, don't bet when the point is the given number.
         numbers: set
             Point numbers to place bets on.
+        skip_point: bool
+            If true skip placing that number if that number is currently the point.
 
         Returns
         -------
