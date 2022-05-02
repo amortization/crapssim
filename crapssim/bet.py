@@ -461,7 +461,7 @@ class Hard4(Hardway):
 class Hard6(Hardway):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
-        self.name: str ="Hard6"
+        self.name: str = "Hard6"
         self.winning_result: list[int | None] = [3, 3]
         self.number: int = 6
         self.payoutratio: int = 9
@@ -470,7 +470,7 @@ class Hard6(Hardway):
 class Hard8(Hardway):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
-        self.name: str ="Hard8"
+        self.name: str = "Hard8"
         self.winning_result: list[int | None] = [4, 4]
         self.number: int = 8
         self.payoutratio: int = 9
@@ -479,7 +479,7 @@ class Hard8(Hardway):
 class Hard10(Hardway):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
-        self.name: str ="Hard10"
+        self.name: str = "Hard10"
         self.winning_result: list[int | None] = [5, 5]
         self.number: int = 10
         self.payoutratio: int = 7
