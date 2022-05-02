@@ -7,14 +7,14 @@ from crapssim.player import Player
 class Table(object):
     """
     Craps Table that contains Dice, Players, the Players' bets, and updates
-    them accordingly.  Main method is run() which should simulate a craps
+    them accordingly.  Main method is run() which should simulate a crap's
     table until a specified number of rolls plays out or all players run out
     of money.
 
     Attributes
     ----------
     players : list
-        List of player objects at the table
+        Player objects at the table
     point : string
         The point for the table.  It is either "Off" when point is off or "On"
         when point is on.
@@ -22,7 +22,7 @@ class Table(object):
         Contains information from updating bets, for given player and a bet
         name, this is status of last bet (win/loss), and win amount.
     dice : Dice
-        Dice for the table
+        Table's dice
     payouts : dice[str, list[int]]
         Field payouts for the table
     pass_rolls : int
@@ -89,7 +89,7 @@ class Table(object):
 
     def _setup_run(self, verbose: bool) -> None:
         """
-        Setup the table to run and ensure that there is at least one player.
+        Set up the table to run and ensure that there is at least one player.
 
         Parameters
         ----------
@@ -107,7 +107,7 @@ class Table(object):
             verbose: bool = True,
             run_out: bool = False) -> None:
         """
-        Runs the craps table until a stopping condition is met.
+        Runs the crap's table until a stopping condition is met.
 
         Parameters
         ----------
@@ -267,7 +267,7 @@ class Table(object):
         Parameters
         ----------
         verbose : bool
-            If True, prints whether the player won, lost, etc and the amount
+            If True, prints whether the player won, lost, etc. and the amount
         """
         self.bet_update_info = {}
         for p in self.players:
