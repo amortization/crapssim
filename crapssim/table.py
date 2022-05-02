@@ -105,7 +105,7 @@ class Table(object):
     def run(self, max_rolls: int,
             max_shooter: float | int = float("inf"),
             verbose: bool = True,
-            runout: bool = False) -> None:
+            run_out: bool = False) -> None:
         """
         Runs the craps table until a stopping condition is met.
 
@@ -117,7 +117,7 @@ class Table(object):
             Maximum number of rolls to run for
         verbose : bool
             If true, print results from table during each roll
-        runout : bool
+        run_out : bool
             If true, continue past max_rolls until player has no more bets on the table
         """
 
@@ -129,7 +129,7 @@ class Table(object):
             self.add_player_bets(verbose=verbose)
             self.roll_and_update(verbose)
 
-            continue_rolling = self.should_keep_rolling(max_rolls, max_shooter, runout)
+            continue_rolling = self.should_keep_rolling(max_rolls, max_shooter, run_out)
 
     def fixed_run(self, dice_outcomes: typing.Iterable[typing.Iterable], verbose: bool = False) -> None:
         """
@@ -210,7 +210,7 @@ class Table(object):
             print("Dice out!")
             print(f"Shooter rolled {self.dice.total} {self.dice.result}")
 
-    def should_keep_rolling(self, max_rolls: int, max_shooter: int, runout: bool) -> bool:
+    def should_keep_rolling(self, max_rolls: int, max_shooter: int, run_out: bool) -> bool:
         """
         Determines whether the program should keep running or not.
 
@@ -220,14 +220,14 @@ class Table(object):
             Maximum number of rolls to run for
         max_shooter
             Maximum number of shooters to run for
-        runout
+        run_out
             If true, continue past max_rolls until player has no more bets on the table
 
         Returns
         -------
         If True, the program should continue running. If False the program should stop running.
         """
-        if runout:
+        if run_out:
             return (self.dice.n_rolls < max_rolls
                     and self.n_shooters <= max_shooter
                     and all(x.bankroll > x.unit for x in self.players)
@@ -424,7 +424,7 @@ if __name__ == "__main__":
     strategy = dice_doctor
     strategy_name = "dice_doctor"  # don't include any "_" in this
     runout = True
-    runout_str = "-runout" if runout else ""
+    runout_str = "-run_out" if runout else ""
 
     if sim:
         # Run simulation of n_roll rolls (estimated rolls/hour with 5 players) 1000 times
@@ -435,7 +435,7 @@ if __name__ == "__main__":
             for i in range(n_sim):
                 table = Table()
                 table.add_player(Player(bankroll, strategy))
-                table.run(n_roll, n_shooter, verbose=False, runout=runout)
+                table.run(n_roll, n_shooter, verbose=False, run_out=runout)
                 out = f"{table.total_player_cash},{table.dice.n_rolls}"
                 f_out.write(str(out))
                 f_out.write(str("\n"))
