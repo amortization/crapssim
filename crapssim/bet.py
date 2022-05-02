@@ -28,7 +28,7 @@ class Bet(ABC):
         Numbers to roll for this bet to win
     losing_numbers : list
         Numbers to roll that cause this bet to lose
-    payoutratio : float
+    payout_ratio : float
         Ratio that bet pays out on a win
     removable : bool
         Whether the bet can be removed or not
@@ -44,7 +44,7 @@ class Bet(ABC):
         self.sub_name: str = str()
         self.winning_numbers: list[int] = []
         self.losing_numbers: list[int] = []
-        self.payoutratio: float = float(1)
+        self.payout_ratio: float = float(1)
         self.removable: bool = True
         self.can_be_placed_point_on = True
         self.can_be_placed_point_off = True
@@ -70,7 +70,7 @@ class Bet(ABC):
 
         if dice_object.total in self.winning_numbers:
             status = "win"
-            win_amount = self.payoutratio * self.bet_amount
+            win_amount = self.payout_ratio * self.bet_amount
         elif dice_object.total in self.losing_numbers:
             status = "lose"
 
@@ -442,7 +442,7 @@ class Hardway(Bet):
 
         if dice_object.result == self.winning_result:
             status = "win"
-            win_amount = self.payoutratio * self.bet_amount
+            win_amount = self.payout_ratio * self.bet_amount
         elif dice_object.total in [self.number, 7]:
             status = "lose"
 
