@@ -23,7 +23,7 @@ STRATEGY_TYPE = typing.Union[typing.Callable[['Player', 'Table', int, dict[str, 
                              typing.Callable[['Player', 'Table', int, None], None]]
 
 
-def passline(player: 'Player', table: 'Table'):
+def pass_line(player: 'Player', table: 'Table'):
     """ If the point is off place a bet on the Pass Line.
 
     Parameters
@@ -43,7 +43,7 @@ def passline(player: 'Player', table: 'Table'):
         player.bet(PassLine(player.unit))
 
 
-def passline_odds(player: 'Player', table: 'Table', mult: int | str = 1) -> None:
+def pass_line_odds(player: 'Player', table: 'Table', mult: int | str = 1) -> None:
     """ If the point is off place a bet on the Pass Line. If the point is on, bet the Pass Line Odds.
 
         Parameters
@@ -60,7 +60,7 @@ def passline_odds(player: 'Player', table: 'Table', mult: int | str = 1) -> None
         None
             Dictionary of strategy info.
         """
-    passline(player, table)
+    pass_line(player, table)
 
     # Pass line odds
     if mult == "345":
@@ -82,7 +82,7 @@ def passline_odds(player: 'Player', table: 'Table', mult: int | str = 1) -> None
         player.bet(Odds(float(mult * player.unit), player.get_bet("PassLine")))
 
 
-def passline_odds2(player: 'Player', table: 'Table') -> None:
+def pass_line_odds2(player: 'Player', table: 'Table') -> None:
     """ Pass Line bet when point is off, 2x odds bet when point is on.
 
         Parameters
@@ -97,10 +97,10 @@ def passline_odds2(player: 'Player', table: 'Table') -> None:
         None
             Dictionary of strategy info.
         """
-    passline_odds(player, table, mult=2)
+    pass_line_odds(player, table, mult=2)
 
 
-def passline_odds345(player: 'Player', table: 'Table') -> None:
+def pass_line_odds345(player: 'Player', table: 'Table') -> None:
     """ Pass Line bet when point is off, 345x odds bet when point is on.
 
         Parameters
@@ -115,7 +115,7 @@ def passline_odds345(player: 'Player', table: 'Table') -> None:
         None
             Dictionary of strategy info.
         """
-    passline_odds(player, table, mult='345')
+    pass_line_odds(player, table, mult='345')
 
 
 def pass2come(player: 'Player', table: 'Table') -> None:
@@ -133,7 +133,7 @@ def pass2come(player: 'Player', table: 'Table') -> None:
         None
             Dictionary of strategy info.
         """
-    passline(player, table)
+    pass_line(player, table)
 
     # Come bet (2)
     if table.point == "On" and player.num_bet("Come") < 2:
@@ -215,7 +215,7 @@ def place68(player: 'Player', table: 'Table') -> None:
         None
             Dictionary of strategy info.
         """
-    passline(player, table)
+    pass_line(player, table)
     # Place 6 and 8 when point is ON
     p_has_place_bets = player.has_bet(
         "Place4", "Place5", "Place6", "Place8", "Place9", "Place10"
@@ -329,7 +329,7 @@ def place68_2come(player: 'Player', table: 'Table') -> None:
         if 8 not in current_numbers:
             player.bet(Place8(6 / 5 * player.unit))
 
-    # add come of passline bets to get on 4 numbers
+    # add come of pass_line bets to get on 4 numbers
     if player.num_bet("Come", "PassLine") < 2 and len(player.bets_on_table) < 4:
         if table.point == "On":
             player.bet(Come(player.unit))
@@ -338,7 +338,7 @@ def place68_2come(player: 'Player', table: 'Table') -> None:
         ):
             player.bet(PassLine(player.unit))
 
-    # if come bet or passline goes to 6 or 8, move place bets to 5 or 9
+    # if come bet or pass_line goes to 6 or 8, move place bets to 5 or 9
     pass_come_winning_numbers = []
     if player.has_bet("PassLine"):
         pass_come_winning_numbers += player.get_bet("PassLine").winning_numbers
@@ -379,8 +379,8 @@ def ironcross(player: 'Player', table: 'Table', mult: int | str = 1) -> None:
         None
             Dictionary of strategy info.
         """
-    passline(player, table)
-    passline_odds(player, table, mult)
+    pass_line(player, table)
+    pass_line_odds(player, table, mult)
     place(player, table, numbers={5, 6, 8})
 
     if table.point == "On":
@@ -410,7 +410,7 @@ def hammerlock(player: 'Player', table: 'Table', mode: str | None = None) -> dic
         None
             Dictionary of strategy info.
         """
-    passline(player, table)
+    pass_line(player, table)
     layodds(player, table, win_mult="345")
 
     place_nums = set()
@@ -473,7 +473,7 @@ def risk12(player: 'Player', table: 'Table', winnings: typing.SupportsFloat = 0)
         None
             Dictionary of strategy info.
         """
-    passline(player, table)
+    pass_line(player, table)
 
     if table.pass_rolls == 0:
         winnings = 0
@@ -528,7 +528,7 @@ def knockout(player: 'Player', table: 'Table') -> None:
         None
             Dictionary of strategy info.
         """
-    passline_odds345(player, table)
+    pass_line_odds345(player, table)
     dontpass(player, table)
 
 

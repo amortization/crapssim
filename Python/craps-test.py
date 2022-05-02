@@ -18,7 +18,7 @@ if __name__ == "__main__":
     # print("Sean's bankroll: {}".format(Sean.bankroll))
 
     # Test making a bet
-    # Sean.bet(passline(5))
+    # Sean.bet(pass_line(5))
     # print("Sean's bankroll: {}".format(Sean.bankroll))
     # print("Sean's current bets: {}".format(
     #   {b.name: b.bet_amount for b in Sean.bets_on_table}

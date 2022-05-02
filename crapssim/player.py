@@ -1,7 +1,7 @@
 import typing
 
 from crapssim.bet import Bet
-from crapssim.strategy import STRATEGY_TYPE, passline
+from crapssim.strategy import STRATEGY_TYPE, pass_line
 
 if typing.TYPE_CHECKING:
     from crapssim.table import Table
@@ -41,7 +41,7 @@ class Player:
     """
 
     def __init__(self, bankroll: typing.SupportsFloat,
-                 bet_strategy: STRATEGY_TYPE = passline,
+                 bet_strategy: STRATEGY_TYPE = pass_line,
                  name: str = "Player",
                  unit: typing.SupportsFloat = 5,
                  table: 'Table' = None):

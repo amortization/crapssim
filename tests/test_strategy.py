@@ -3,25 +3,25 @@ from collections import namedtuple
 import pytest
 
 from crapssim import Player, Table
-from crapssim.strategy import passline, passline_odds, passline_odds2, passline_odds345, pass2come, place, place68, \
+from crapssim.strategy import pass_line, pass_line_odds, pass_line_odds2, pass_line_odds345, pass2come, place, place68, \
     dontpass, layodds, place68_2come, ironcross, hammerlock, risk12, knockout, dicedoctor, place68_dontcome2odds
 
 
 @pytest.mark.parametrize(['strategy', 'strategy_info', 'rolls', 'correct_bets'], [
-    (passline, {}, [], {('PassLine', '', 5)}),
-    (passline, {}, [(4, 4)], {('PassLine', '', 5)}),
-    (passline_odds, {}, [], {('PassLine', '', 5)}),
-    (passline_odds, {}, [(4, 4)], {('PassLine', '', 5),
-                                   ('Odds', '8', 5)}),
-    (passline_odds, {}, [(4, 4), (3, 3)], {('PassLine', '', 5),
-                                           ('Odds', '8', 5)}),
-    (passline_odds, {'mult': '345'}, [], {('PassLine', '', 5)}),
-    (passline_odds, {'mult': '345'}, [(6, 4)], {('PassLine', '', 5),
-                                                ('Odds', '10', 15)}),
-    (passline_odds2, {}, [(2, 2)], {('PassLine', '', 5),
-                                    ('Odds', '4', 10)}),
-    (passline_odds345, {}, [(3, 4), (3, 3)], {('PassLine', '', 5),
-                                              ('Odds', '6', 25)}),
+    (pass_line, {}, [], {('PassLine', '', 5)}),
+    (pass_line, {}, [(4, 4)], {('PassLine', '', 5)}),
+    (pass_line_odds, {}, [], {('PassLine', '', 5)}),
+    (pass_line_odds, {}, [(4, 4)], {('PassLine', '', 5),
+                                    ('Odds', '8', 5)}),
+    (pass_line_odds, {}, [(4, 4), (3, 3)], {('PassLine', '', 5),
+                                            ('Odds', '8', 5)}),
+    (pass_line_odds, {'mult': '345'}, [], {('PassLine', '', 5)}),
+    (pass_line_odds, {'mult': '345'}, [(6, 4)], {('PassLine', '', 5),
+                                                 ('Odds', '10', 15)}),
+    (pass_line_odds2, {}, [(2, 2)], {('PassLine', '', 5),
+                                     ('Odds', '4', 10)}),
+    (pass_line_odds345, {}, [(3, 4), (3, 3)], {('PassLine', '', 5),
+                                               ('Odds', '6', 25)}),
     (pass2come, {}, [], {('PassLine', '', 5)}),
     (pass2come, {}, [(4, 5)], {('PassLine', '', 5),
                                ('Come', '', 5)}),

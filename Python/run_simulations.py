@@ -98,7 +98,7 @@ if __name__ == "__main__":
     n_roll = float('inf')
     n_shooter = 1
     bankrolls= [10000]
-    strategies = {"passline": strategy.passline}
+    strategies = {"pass_line": strategy.pass_line}
     name = "testing"
     # strategy = strat._strat_place68
     # strategy_name = "place68" # don't include any "_" in this
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     """ Run multiple strategies """
     # strategies = [strat._strat_place68, strat._strat_place68_2come, strat._strat_pass2come, strat._strat_passline_odds2]
-    # strategy_names = ["place68", "place68-2come", "pass-2come", "passline-w-2odds"]
+    # strategy_names = ["place68", "place68-2come", "pass-2come", "pass_line-w-2odds"]
 
     # for strategy, strategy_name in zip(strategies,strategy_names):
     #     # run_simulation_burnin(n_sim, n_roll, bankroll, strategy, strategy_name, burn_in=20, runout=runout)

@@ -42,7 +42,7 @@ To see how a single session might play out for you using a pass line bet with do
 import crapssim as craps
 
 table = craps.Table()
-your_strat = craps.strategy.passline_odds2
+your_strat = craps.strategy.pass_line_odds2
 you = craps.Player(bankroll=200, bet_strategy=your_strat)
 
 table.add_player(you)
