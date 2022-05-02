@@ -230,7 +230,7 @@ def place68(player: 'Player', table: 'Table') -> None:
             player.bet(Place6(6 / 5 * player.unit))
 
 
-def dontpass(player: 'Player', table: 'Table') -> None:
+def dont_pass(player: 'Player', table: 'Table') -> None:
     """ Place a bet on the Don't Pass line.
 
         Parameters
@@ -270,7 +270,7 @@ def layodds(player: 'Player', table: 'Table', win_mult: int | str = 1) -> None:
     # Assume that someone tries to win the `win_mult` times the unit on each bet, which corresponds
     # well to the max_odds on a table.
     # For `win_mult` = "345", this assumes max of 3-4-5x odds
-    dontpass(player, table)
+    dont_pass(player, table)
     mult = 1
     # Lay odds for don't pass
     if win_mult == "345":
@@ -529,7 +529,7 @@ def knockout(player: 'Player', table: 'Table') -> None:
             Dictionary of strategy info.
         """
     pass_line_odds345(player, table)
-    dontpass(player, table)
+    dont_pass(player, table)
 
 
 def dicedoctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[str, int]:
