@@ -4,7 +4,7 @@ import pytest
 
 from crapssim import Player, Table
 from crapssim.strategy import pass_line, pass_line_odds, pass_line_odds2, pass_line_odds345, pass2come, place, place68, \
-    dont_pass, lay_odds, place68_2come, iron_cross, hammerlock, risk12, knockout, dicedoctor, place68_dontcome2odds
+    dont_pass, lay_odds, place68_2come, iron_cross, hammerlock, risk12, knockout, dice_doctor, place68_dontcome2odds
 
 
 @pytest.mark.parametrize(['strategy', 'strategy_info', 'rolls', 'correct_bets'], [
@@ -86,8 +86,8 @@ from crapssim.strategy import pass_line, pass_line_odds, pass_line_odds2, pass_l
     (knockout, {}, [(4, 2)], {('PassLine', '', 5),
                               ('DontPass', '', 5),
                               ('Odds', '6', 25)}),
-    (dicedoctor, {}, [], {('Field', '', 10)}),
-    (dicedoctor, {}, [(1, 1), (5, 6), (5, 5)], {('Field', '', 30)}),
+    (dice_doctor, {}, [], {('Field', '', 10)}),
+    (dice_doctor, {}, [(1, 1), (5, 6), (5, 5)], {('Field', '', 30)}),
     (place68_dontcome2odds, {}, [], set()),
     (place68_dontcome2odds, {}, [(4, 4)], {('Place6', '', 6),
                                            ('Place8', '', 6),

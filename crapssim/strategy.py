@@ -532,7 +532,7 @@ def knockout(player: 'Player', table: 'Table') -> None:
     dont_pass(player, table)
 
 
-def dicedoctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[str, int]:
+def dice_doctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[str, int]:
     """ Field bet with a progression if you win.
 
         Parameters

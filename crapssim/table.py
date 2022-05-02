@@ -416,7 +416,7 @@ if __name__ == "__main__":
     import sys
 
     # import strategy
-    from crapssim.strategy import dicedoctor
+    from crapssim.strategy import dice_doctor
 
     sim = False
     printout = True
@@ -425,8 +425,8 @@ if __name__ == "__main__":
     n_roll = 144
     n_shooter = 2
     bankroll = 1000
-    strategy = dicedoctor
-    strategy_name = "dicedoctor"  # don't include any "_" in this
+    strategy = dice_doctor
+    strategy_name = "dice_doctor"  # don't include any "_" in this
     runout = True
     runout_str = "-runout" if runout else ""
 
