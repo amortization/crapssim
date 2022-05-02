@@ -343,10 +343,6 @@ class Point:
     """
     The point on a craps table.
 
-    Parameters
-    ----------
-    NONE
-
     Attributes
     ----------
     status : str
