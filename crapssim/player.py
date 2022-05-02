@@ -117,7 +117,7 @@ class Player:
             dict[str, dict[str, str | None | float]]:
         info = {}
         for b in self.bets_on_table[:]:
-            status, win_amount = b._update_bet(self.table, self.table.dice)
+            status, win_amount = b.update_bet(self.table, self.table.dice)
 
             if status == "win":
                 self.bankroll += win_amount + b.bet_amount

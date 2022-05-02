@@ -36,7 +36,7 @@ def test_ev_oneroll(bet, ev):
     for d1 in range(1, 7):
         for d2 in range(1, 7):
             d.fixed_roll([d1, d2])
-            status, win_amt = bet._update_bet(t, d)
+            status, win_amt = bet.update_bet(t, d)
 
             outcomes.append(win_amt if status == "win" else -1 if status == "lose" else 0)
 
