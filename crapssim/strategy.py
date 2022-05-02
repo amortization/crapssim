@@ -250,7 +250,7 @@ def dont_pass(player: 'Player', table: 'Table') -> None:
         player.bet(DontPass(player.unit))
 
 
-def layodds(player: 'Player', table: 'Table', win_mult: int | str = 1) -> None:
+def lay_odds(player: 'Player', table: 'Table', win_mult: int | str = 1) -> None:
     """ Place a lay bet.
 
         Parameters
@@ -411,7 +411,7 @@ def hammerlock(player: 'Player', table: 'Table', mode: str | None = None) -> dic
             Dictionary of strategy info.
         """
     pass_line(player, table)
-    layodds(player, table, win_mult="345")
+    lay_odds(player, table, win_mult="345")
 
     place_nums = set()
     for bet in player.bets_on_table:
