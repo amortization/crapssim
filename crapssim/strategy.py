@@ -475,10 +475,10 @@ def risk12(player: 'Player', table: 'Table', winnings: typing.SupportsFloat = 0)
         winnings = 0
 
     if table.point == "Off":
-        if table.last_roll in table.payouts["fielddouble"]:
+        if table.last_roll in table.field_payouts and table.field_payouts[table.last_roll] == 2:
             # win double from the field, lose pass line, for a net of 1 unit win
             winnings += player.unit
-        elif table.last_roll in table.payouts["fieldtriple"]:
+        elif table.last_roll in table.field_payouts and table.field_payouts[table.last_roll] == 3:
             # win triple from the field, lose pass line, for a net of 2 unit win
             winnings += 2 * player.unit
         elif table.last_roll == 11:

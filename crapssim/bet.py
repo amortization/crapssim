@@ -244,15 +244,10 @@ class Field(Bet):
         status: str | None = None
         win_amount: float = 0
 
-        if dice_object.total in table_object.payouts['fieldtriple']:
+        if dice_object.total in self.winning_numbers:
+            self.payoutratio = table_object.field_payouts[dice_object.total]
             status = "win"
-            win_amount = 3 * self.bet_amount
-        elif dice_object.total in table_object.payouts['fielddouble']:
-            status = "win"
-            win_amount = 2 * self.bet_amount
-        elif dice_object.total in self.winning_numbers:
-            status = "win"
-            win_amount = 1 * self.bet_amount
+            win_amount = self.payoutratio * self.bet_amount
         elif dice_object.total in self.losing_numbers:
             status = "lose"
 

@@ -23,8 +23,8 @@ class Table(object):
         name, this is status of last bet (win/loss), and win amount.
     dice : Dice
         Dice for the table
-    payouts : dice[str, list[int]]
-        Field payouts for the table
+    field_payouts : dice[str, list[int]]
+        Field field_payouts for the table
     pass_rolls : int
         Number of rolls for the current pass
     last_roll : int
@@ -38,42 +38,36 @@ class Table(object):
         self.point: Point = Point()
         self.dice: Dice = Dice()
         self.bet_update_info: dict | None = None
-        self.payouts: dict[str, list[int]] = {"fielddouble": [2, 12], "fieldtriple": []}
+        self.field_payouts: dict[str, list[int]] = {2: 2,
+                                                    3: 1,
+                                                    4: 1,
+                                                    9: 1,
+                                                    10: 1,
+                                                    11: 1,
+                                                    12: 2}
         self.pass_rolls: int = 0
         self.last_roll: int | None = None
         self.n_shooters: int = 1
 
     @classmethod
     def with_payouts(cls, **kwargs: list[int]) -> 'Table':
-        """ Return a table with the payouts specified in **kwargs.
+        """ Return a table with the field_payouts specified in **kwargs.
 
         Parameters
         ----------
         **kwargs : list[int]
-            The tables payouts.
+            The tables field_payouts.
 
         Returns
         -------
         Table
-            The table with the specified payouts.
+            The table with the specified field_payouts.
 
         """
         table = cls()
         for name, value in kwargs.items():
-            table.payouts[name] = value
+            table.field_payouts[name] = value
         return table
-
-    def set_payouts(self, name: str, value: list[int]) -> None:
-        """ Set a payout.
-
-        Parameters
-        ----------
-        name : str
-            Name of the payout.
-        value : list[int]
-            Rolls for the payout.
-        """
-        self.payouts[name] = value
 
     def add_player(self, player_object: Player) -> None:
         """ Add player object to the table
@@ -460,4 +454,4 @@ if __name__ == "__main__":
 
     # table = Table().with_payouts(fielddouble=[2], fieldtriple=[12])
     # print(table)
-    # print(table.payouts)
+    # print(table.field_payouts)
