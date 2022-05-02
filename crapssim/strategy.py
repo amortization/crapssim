@@ -453,7 +453,7 @@ def hammerlock(player: 'Player', table: 'Table', mode: str | None = None) -> dic
     elif mode == "takedown" and table.point == "Off":
         mode = None
 
-    player.strat_info['mode'] = mode
+    player.strategy_info['mode'] = mode
 
 
 def risk12(player: 'Player', table: 'Table', winnings: typing.SupportsFloat = 0) -> dict[str, int]:
@@ -510,7 +510,7 @@ def risk12(player: 'Player', table: 'Table', winnings: typing.SupportsFloat = 0)
             else:
                 place(player, table, numbers={8})
 
-    player.strat_info['winnings'] = winnings
+    player.strategy_info['winnings'] = winnings
 
 
 def knockout(player: 'Player', table: 'Table') -> None:
@@ -569,14 +569,14 @@ def dicedoctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[s
 
     progression += 1
 
-    player.strat_info['progression'] = progression
+    player.strategy_info['progression'] = progression
 
 
-# def place68_cpr(player: 'Player', table: 'Table', unit: int = 5, strat_info: dict[]=None) -> dict[str, str]:
+# def place68_cpr(player: 'Player', table: 'Table', unit: int = 5, strategy_info: dict[]=None) -> dict[str, str]:
 #     """ place 6 & 8 after point is establish.  Then collect, press, and regress (in that order) on each win """
 #     ## NOTE: NOT WORKING
-#     if strat_info is None:
-#         strat_info = {"mode6": "collect", "mode8": "collect"}
+#     if strategy_info is None:
+#         strategy_info = {"mode6": "collect", "mode8": "collect"}
 #
 #     if table.point == "On":
 #         # always place 6 and 8 when they aren't place bets already
@@ -595,18 +595,18 @@ def dicedoctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[s
 #                 # print("level3")
 #                 # print(table.bet_update_info[player][bet.name])
 #                 if table.bet_update_info[player][bet.name]["status"] == "win":
-#                     # print("place6 mode: {}".format(strat_info["mode6"]))
-#                     if strat_info["mode6"] == "press":
+#                     # print("place6 mode: {}".format(strategy_info["mode6"]))
+#                     if strategy_info["mode6"] == "press":
 #                         player.remove(bet)
 #                         player.bet(Place6(2 * bet.bet_amount))
-#                         strat_info["mode6"] = "regress"
-#                     elif strat_info["mode6"] == "regress":
+#                         strategy_info["mode6"] = "regress"
+#                     elif strategy_info["mode6"] == "regress":
 #                         player.remove(bet)
 #                         player.bet(Place6(6 / 5 * unit))
-#                         strat_info["mode6"] = "collect"
-#                     elif strat_info["mode6"] == "collect":
-#                         strat_info["mode6"] = "press"
-#                     # print("updated place6 mode: {}".format(strat_info["mode6"]))
+#                         strategy_info["mode6"] = "collect"
+#                     elif strategy_info["mode6"] == "collect":
+#                         strategy_info["mode6"] = "press"
+#                     # print("updated place6 mode: {}".format(strategy_info["mode6"]))
 #         # place8
 #         if player.has_bet("Place8"):
 #             bet = player.get_bet("Place8")
@@ -616,20 +616,20 @@ def dicedoctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[s
 #                 # print("level3")
 #                 # print(table.bet_update_info[player][bet.name])
 #                 if table.bet_update_info[player][bet.name]["status"] == "win":
-#                     # print("place8 mode: {}".format(strat_info["mode8"]))
-#                     if strat_info["mode8"] == "press":
+#                     # print("place8 mode: {}".format(strategy_info["mode8"]))
+#                     if strategy_info["mode8"] == "press":
 #                         player.remove(bet)
 #                         player.bet(Place8(2 * bet.bet_amount))
-#                         strat_info["mode8"] = "regress"
-#                     elif strat_info["mode8"] == "regress":
+#                         strategy_info["mode8"] = "regress"
+#                     elif strategy_info["mode8"] == "regress":
 #                         player.remove(bet)
 #                         player.bet(Place8(6 / 5 * unit))
-#                         strat_info["mode8"] = "collect"
-#                     elif strat_info["mode8"] == "collect":
-#                         strat_info["mode8"] = "press"
+#                         strategy_info["mode8"] = "collect"
+#                     elif strategy_info["mode8"] == "collect":
+#                         strategy_info["mode8"] = "press"
 #
-#     print(strat_info)
-#     return strat_info
+#     print(strategy_info)
+#     return strategy_info
 
 
 def place68_dontcome2odds(player: 'Player', table: 'Table') -> None:
