@@ -412,6 +412,8 @@ class CAndE(Bet):
                 payoutratio = 3
             elif dice_object.total in [11]:
                 payoutratio = 7
+            else:
+                raise NotImplementedError
             win_amount = payoutratio * self.bet_amount
         elif dice_object.total in self.losing_numbers:
             status = "lose"
