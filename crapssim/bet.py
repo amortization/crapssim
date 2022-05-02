@@ -234,8 +234,12 @@ class Field(Bet):
         Set of numbers that pay triple on the field bet (default = [])
     """
 
-    def __init__(self, bet_amount: float, double: list[int] = [2, 12], triple: list[int] = []):
+    def __init__(self, bet_amount: float, double=None, triple=None):
         super().__init__(bet_amount)
+        if triple is None:
+            triple = []
+        if double is None:
+            double = [2, 12]
         self.name: str = "Field"
         self.double_winning_numbers: list[int] = double
         self.triple_winning_numbers: list[int] = triple
