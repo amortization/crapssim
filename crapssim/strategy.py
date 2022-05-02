@@ -385,11 +385,7 @@ def ironcross(player: 'Player', table: 'Table', mult: int | str = 1) -> None:
 
     if table.point == "On":
         if not player.has_bet("Field"):
-            player.bet(Field(
-                player.unit,
-                double=table.payouts["fielddouble"],
-                triple=table.payouts["fieldtriple"],
-            ))
+            player.bet(Field(player.unit))
 
 
 def hammerlock(player: 'Player', table: 'Table', mode: str | None = None) -> dict[str, str]:
@@ -490,11 +486,7 @@ def risk12(player: 'Player', table: 'Table', winnings: typing.SupportsFloat = 0)
             winnings += 2 * player.unit
 
     if table.point == "Off":
-        player.bet(Field(
-            player.unit,
-            double=table.payouts["fielddouble"],
-            triple=table.payouts["fieldtriple"],
-        ))
+        player.bet(Field(player.unit))
         if table.last_roll == 7:
             for bet_nm in ["Place6", "Place8"]:
                 player.remove_if_present(bet_nm)
@@ -561,11 +553,7 @@ def dicedoctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[s
     else:
         amount = bet_progression[len(bet_progression) - 1] * player.unit / 5
 
-    player.bet(Field(
-        amount,
-        double=table.payouts["fielddouble"],
-        triple=table.payouts["fieldtriple"],
-    ))
+    player.bet(Field(amount))
 
     progression += 1
 

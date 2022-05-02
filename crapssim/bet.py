@@ -234,11 +234,9 @@ class Field(Bet):
         Set of numbers that pay triple on the field bet (default = [])
     """
 
-    def __init__(self, bet_amount: float, double: list[int] = [2, 12], triple: list[int] = []):
+    def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
         self.name: str = "Field"
-        self.double_winning_numbers: list[int] = double
-        self.triple_winning_numbers: list[int] = triple
         self.winning_numbers: list[int] = [2, 3, 4, 9, 10, 11, 12]
         self.losing_numbers: list[int] = [5, 6, 7, 8]
 
@@ -246,10 +244,10 @@ class Field(Bet):
         status: str | None = None
         win_amount: float = 0
 
-        if dice_object.total in self.triple_winning_numbers:
+        if dice_object.total in table_object.payouts['fieldtriple']:
             status = "win"
             win_amount = 3 * self.bet_amount
-        elif dice_object.total in self.double_winning_numbers:
+        elif dice_object.total in table_object.payouts['fielddouble']:
             status = "win"
             win_amount = 2 * self.bet_amount
         elif dice_object.total in self.winning_numbers:
@@ -455,7 +453,7 @@ class Hard4(Hardway):
 class Hard6(Hardway):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
-        self.name: str ="Hard6"
+        self.name: str = "Hard6"
         self.winning_result: list[int | None] = [3, 3]
         self.number: int = 6
         self.payoutratio: int = 9
@@ -464,7 +462,7 @@ class Hard6(Hardway):
 class Hard8(Hardway):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
-        self.name: str ="Hard8"
+        self.name: str = "Hard8"
         self.winning_result: list[int | None] = [4, 4]
         self.number: int = 8
         self.payoutratio: int = 9
@@ -473,7 +471,7 @@ class Hard8(Hardway):
 class Hard10(Hardway):
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
-        self.name: str ="Hard10"
+        self.name: str = "Hard10"
         self.winning_result: list[int | None] = [5, 5]
         self.number: int = 10
         self.payoutratio: int = 7
