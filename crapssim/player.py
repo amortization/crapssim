@@ -35,7 +35,7 @@ class Player:
     unit : typing.SupportsFloat
         Standard amount of bet to be used by bet_strategy
     bets_on_table : list
-        List of betting objects for the player
+        Betting objects for the player that are currently on the table.
     total_bet_amount : int
         Sum of bet value for the player
     """
