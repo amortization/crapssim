@@ -423,31 +423,31 @@ if __name__ == "__main__":
     bankroll = 1000
     strategy = dice_doctor
     strategy_name = "dice_doctor"  # don't include any "_" in this
-    runout = True
-    runout_str = "-run_out" if runout else ""
+    run_out_ = True
+    run_out_str_ = "-run_out" if run_out_ else ""
 
     if sim:
         # Run simulation of n_roll rolls (estimated rolls/hour with 5 players) 1000 times
-        outfile_name = f"./output/simulations/{strategy_name}_sim-{n_sim}_roll-{n_roll}_br-{bankroll}{runout_str}.txt"
+        outfile_name = f"./output/simulations/{strategy_name}_sim-{n_sim}_roll-{n_roll}_br-{bankroll}{run_out_str_}.txt"
         with open(outfile_name, "w") as f_out:
             f_out.write("total_cash,n_rolls")
             f_out.write(str("\n"))
             for i in range(n_sim):
-                table = Table()
-                table.add_player(Player(bankroll, strategy))
-                table.run(n_roll, n_shooter, verbose=False, run_out=runout)
-                out = f"{table.total_player_cash},{table.dice.n_rolls}"
+                table_ = Table()
+                table_.add_player(Player(bankroll, strategy))
+                table_.run(n_roll, n_shooter, verbose=False, run_out=run_out_)
+                out = f"{table_.total_player_cash},{table_.dice.n_rolls}"
                 f_out.write(str(out))
                 f_out.write(str("\n"))
 
     if printout:
         # Run one simulation with verbose=True to check strategy
-        outfile_name = f"./output/printout/{strategy_name}_roll-{n_roll}_br-{bankroll}{runout_str}.txt"
+        outfile_name = f"./output/printout/{strategy_name}_roll-{n_roll}_br-{bankroll}{run_out_str_}.txt"
         with open(outfile_name, "w") as f_out:
             sys.stdout = f_out
-            table = Table()
-            table.add_player(Player(bankroll, strategy))
-            table.run(n_roll, verbose=True)
+            table_ = Table()
+            table_.add_player(Player(bankroll, strategy))
+            table_.run(n_roll, verbose=True)
             # out = table.total_player_cash
             # f_out.write(str(out))
             # f_out.write(str('\n'))

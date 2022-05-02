@@ -9,9 +9,9 @@ def run_printout(n_roll, n_shooter, bankroll, strategy, strategy_name, runout):
     runout_str = "-run_out" if runout else ""
     # Run one simulation with verbose=True to check strategy
     outfile_name = f"./output/printout/{strategy_name}_roll-{n_roll}_shooter-{n_shooter}_br-{bankroll}{runout_str}.txt"
-    # outfile_name = "./output/printout/{}_roll-{}_br-{}{}.txt".format(strategy_name, n_roll, bankroll, runout_str)
+    # outfile_name = "./output/printout/{}_roll-{}_br-{}{}.txt".format(strategy_name, n_roll, bankroll, run_out_str_)
     print("Running printout for " + os.path.basename(outfile_name))
-    # print("Running printout for {}_sim-{}_roll-{}_br-{}{}.txt".format(strategy_name, n_sim, n_roll, bankroll, runout_str))
+    # print("Running printout for {}_sim-{}_roll-{}_br-{}{}.txt".format(strategy_name, n_sim, n_roll, bankroll, run_out_str_))
     with open(outfile_name, 'w') as f_out:
         sys.stdout = f_out
         table = Table()
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     # strategy = strat._strat_place68
     # strategy_name = "place68" # don't include any "_" in this
     runout = True
-    # runout_str = "-run_out" if run_out else ""
+    # run_out_str_ = "-run_out" if run_out else ""
 
     """ Run one strategy  """
     if printout: 
