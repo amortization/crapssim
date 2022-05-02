@@ -89,7 +89,7 @@ class PassLine(Bet):
         self.winning_numbers: list[int] = [7, 11]
         self.losing_numbers: list[int] = [2, 3, 12]
         self.payout_ratio: float = 1.0
-        self.prepoint: bool = True
+        self.pre_point: bool = True
         self.can_be_placed_point_on = False
 
     def _update_bet(self, table_object: "Table", dice_object: Dice) -> tuple[str | None, float]:
@@ -101,10 +101,10 @@ class PassLine(Bet):
             win_amount = self.payout_ratio * self.bet_amount
         elif dice_object.total in self.losing_numbers:
             status = "lose"
-        elif self.prepoint:
+        elif self.pre_point:
             self.winning_numbers = [dice_object.total]
             self.losing_numbers = [7]
-            self.prepoint = False
+            self.pre_point = False
             self.removable = False
 
         return status, win_amount
@@ -119,7 +119,7 @@ class Come(PassLine):
 
     def _update_bet(self, table_object: "Table", dice_object: Dice) -> tuple[str | None, float]:
         status, win_amount = super()._update_bet(table_object, dice_object)
-        if not self.prepoint and self.sub_name == "":
+        if not self.pre_point and self.sub_name == "":
             self.sub_name = "".join(str(e) for e in self.winning_numbers)
         return status, win_amount
 
@@ -278,7 +278,7 @@ class DontPass(Bet):
         self.losing_numbers: list[int] = [7, 11]
         self.push_numbers: list[int] = [12]
         self.payout_ratio: float = 1.0
-        self.prepoint: bool = True
+        self.pre_point: bool = True
         self.can_be_placed_point_on = False
 
     def _update_bet(self, table_object: "Table", dice_object: Dice) -> tuple[str | None, float]:
@@ -292,11 +292,11 @@ class DontPass(Bet):
             status = "lose"
         elif dice_object.total in self.push_numbers:
             status = "push"
-        elif self.prepoint:
+        elif self.pre_point:
             self.winning_numbers = [7]
             self.losing_numbers = [dice_object.total]
             self.push_numbers = []
-            self.prepoint = False
+            self.pre_point = False
 
         return status, win_amount
 
@@ -310,7 +310,7 @@ class DontCome(DontPass):
 
     def _update_bet(self, table_object: "Table", dice_object: Dice) -> tuple[str | None, float]:
         status, win_amount = super()._update_bet(table_object, dice_object)
-        if not self.prepoint and self.sub_name == "":
+        if not self.pre_point and self.sub_name == "":
             self.sub_name = "".join(str(e) for e in self.losing_numbers)
         return status, win_amount
 

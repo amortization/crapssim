@@ -685,7 +685,7 @@ def place68_dontcome2odds(player: 'Player', table: 'Table') -> None:
         else:
             win_mult = float(win_mult)
             # print([[b.name, b.sub_name] for b in player.bets_on_table])
-            if not dc.prepoint:
+            if not dc.pre_point:
                 lose_num = dc.losing_numbers[0]
                 if lose_num in [4, 10]:
                     mult = 2 * win_mult
@@ -694,7 +694,7 @@ def place68_dontcome2odds(player: 'Player', table: 'Table') -> None:
                 elif lose_num in [6, 8]:
                     mult = 6 / 5 * win_mult
 
-        if not player.has_bet("LayOdds") and not dc.prepoint:
+        if not player.has_bet("LayOdds") and not dc.pre_point:
             player.bet(LayOdds(mult * player.unit, dc))
 
 
