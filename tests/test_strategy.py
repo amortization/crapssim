@@ -113,4 +113,4 @@ def test_strategies_compare_bets(strategy, strategy_info, rolls: list[tuple[int,
 
     bets = table.players[0].bets_on_table
 
-    assert {(b.name, b.subname, b.bet_amount) for b in bets} == correct_bets
+    assert {(b.name, b.sub_name, b.bet_amount) for b in bets} == correct_bets

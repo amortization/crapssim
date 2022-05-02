@@ -69,8 +69,8 @@ class Player:
         if self.bankroll >= bet_object.bet_amount:
             self.bankroll -= bet_object.bet_amount
 
-            if (bet_object.name, bet_object.subname) in [(b.name, b.subname) for b in self.bets_on_table]:
-                existing_bet: Bet = self.get_bet(bet_object.name, bet_object.subname)
+            if (bet_object.name, bet_object.sub_name) in [(b.name, b.sub_name) for b in self.bets_on_table]:
+                existing_bet: Bet = self.get_bet(bet_object.name, bet_object.sub_name)
                 existing_bet.bet_amount += bet_object.bet_amount
             else:
                 self.bets_on_table.append(bet_object)
@@ -95,7 +95,7 @@ class Player:
             bet_name_list: list[str] = [b.name for b in self.bets_on_table]
             ind: int = bet_name_list.index(bet_name)
         else:
-            bet_name_subname_list: list[list[str]] = [[b.name, b.subname] for b in self.bets_on_table]
+            bet_name_subname_list: list[list[str]] = [[b.name, b.sub_name] for b in self.bets_on_table]
             ind = bet_name_subname_list.index([bet_name, bet_subname])
         return self.bets_on_table[ind]
 

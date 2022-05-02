@@ -22,7 +22,7 @@ class Bet(ABC):
         Wagered amount for the bet
     name : string
         Name for the bet
-    subname : string
+    sub_name : string
         Subname, usually denotes number for a come/don't come bet
     winning_numbers : list
         Numbers to roll for this bet to win
@@ -41,7 +41,7 @@ class Bet(ABC):
     def __init__(self, bet_amount: typing.SupportsFloat):
         self.bet_amount: float = float(bet_amount)
         self.name: str = str()
-        self.subname: str = str()
+        self.sub_name: str = str()
         self.winning_numbers: list[int] = []
         self.losing_numbers: list[int] = []
         self.payoutratio: float = float(1)
@@ -119,7 +119,7 @@ class Come(PassLine):
 
     def _update_bet(self, table_object: "Table", dice_object: Dice) -> tuple[str | None, float]:
         status, win_amount = super()._update_bet(table_object, dice_object)
-        if not self.prepoint and self.subname == "":
+        if not self.prepoint and self.sub_name == "":
             self.subname = "".join(str(e) for e in self.winning_numbers)
         return status, win_amount
 
@@ -310,7 +310,7 @@ class DontCome(DontPass):
 
     def _update_bet(self, table_object: "Table", dice_object: Dice) -> tuple[str | None, float]:
         status, win_amount = super()._update_bet(table_object, dice_object)
-        if not self.prepoint and self.subname == "":
+        if not self.prepoint and self.sub_name == "":
             self.subname = "".join(str(e) for e in self.losing_numbers)
         return status, win_amount
 
