@@ -361,7 +361,7 @@ def place68_2come(player: 'Player', table: 'Table') -> None:
             player.bet(Place9(player.unit))
 
 
-def ironcross(player: 'Player', table: 'Table', mult: int | str = 1) -> None:
+def iron_cross(player: 'Player', table: 'Table', mult: int | str = 1) -> None:
     """ Bet the Pass Line, the Pass Line Odds, and Place on 5, 6, and 8. If point is on and no bet on the field, place
         a bet on the field.
 

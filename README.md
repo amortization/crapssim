@@ -58,7 +58,7 @@ n_sim = 20
 bankroll = 300
 strategies = {
     "place68": craps.strategy.place68,
-    "ironcross": craps.strategy.ironcross
+    "iron_cross": craps.strategy.iron_cross
 }
 
 for i in range(n_sim):
