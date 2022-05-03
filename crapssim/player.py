@@ -84,7 +84,8 @@ class Player:
 
         if (bet_object.name, bet_object.winning_numbers) in \
                 [(b.name, b.winning_numbers) for b in self.bets_on_table]:
-            existing_bet: Bet = self.get_bet(bet_object.name, bet_object.winning_numbers)
+            existing_bet: Bet = self.get_bet(name=bet_object.name,
+                                             winning_numbers=bet_object.winning_numbers)
             existing_bet.bet_amount += bet_object.bet_amount
         else:
             self.bets_on_table.append(bet_object)
@@ -105,14 +106,24 @@ class Player:
             self.bankroll += bet_object.bet_amount
             self.bets_on_table.remove(bet_object)
 
-    def has_bets(self, *bets_to_check: str) -> bool:
+    def has_bet(self, name: str | None = None,
+                names: list[str] | None = None,
+                winning_number: int | None = None,
+                winning_numbers: list[int] | None = None,
+                losing_number: int | None = None,
+                losing_numbers: list[int] | None = None,
+                payout_ratio: float | None = None,
+                removable: bool | None = None) -> bool:
         """
-        returns True if bets_to_check and self.bets_on_table has at least one thing in common
+        Returns True if there is a bet whose name is in bets_to_check
         """
-        bet_names = {b.name for b in self.bets_on_table}
-        return bool(bet_names.intersection(bets_to_check))
+        return len(self.get_bets(name=name, names=names, winning_number=winning_number,
+                                 winning_numbers=winning_numbers, losing_number=losing_number,
+                                 losing_numbers=losing_numbers, payout_ratio=payout_ratio,
+                                 removable=removable)) > 0
 
     def get_bets(self, name: str | None = None,
+                 names: list[str] | None = None,
                  winning_number: int | None = None,
                  winning_numbers: list[int] | None = None,
                  losing_number: int | None = None,
@@ -128,6 +139,8 @@ class Player:
         ----------
         name : str | None
             Returns bets where the name matches the given name.
+        names : list[str] | None
+            Returns bets where the name is in the given list of names.
         winning_number : int | None
             Returns bets where the winning number is included in the bets winning numbers.
         winning_numbers : list[int] | None
@@ -149,6 +162,8 @@ class Player:
         bets: list[Bet] = self.bets_on_table
         if name is not None:
             bets = filter(lambda x: x.name == name, bets)
+        if names is not None:
+            bets = filter(lambda x: x.name in names, bets)
         if winning_number is not None:
             bets = filter(lambda x: winning_number in x.winning_numbers, bets)
         if winning_numbers is not None:
@@ -163,10 +178,23 @@ class Player:
             bets = filter(lambda x: x.removable is removable, bets)
         return list(bets)
 
-    def get_bet(self, bet_name: str, bet_winning_numbers: str = None) -> Bet:
-        """returns first betting object matching bet_name and bet_winning_numbers.
-        If bet_winning_numbers="Any", returns first betting object matching bet_name"""
-        return self.get_bets(name=bet_name, winning_numbers=bet_winning_numbers)[0]
+    def get_bet(self, name: str | None = None,
+                names: list[str] | None = None,
+                winning_number: int | None = None,
+                winning_numbers: list[int] | None = None,
+                losing_number: int | None = None,
+                losing_numbers: list[int] | None = None,
+                payout_ratio: float | None = None,
+                removable: bool | None = None) -> Bet:
+        """Returns the first bet where all the criteria match"""
+        return self.get_bets(name=name,
+                             names=names,
+                             winning_number=winning_number,
+                             winning_numbers=winning_numbers,
+                             losing_number=losing_number,
+                             losing_numbers=losing_numbers,
+                             payout_ratio=payout_ratio,
+                             removable=removable)[0]
 
     def num_bet(self, *bets_to_check: str) -> int:
         """ returns the total number of bets in self.bets_on_table that match bets_to_check """
@@ -174,8 +202,9 @@ class Player:
         return sum([i in bets_to_check for i in bet_names])
 
     def remove_if_present(self, bet_name: str, bet_winning_numbers: str = None) -> None:
-        if self.has_bets(bet_name):
-            self.remove(self.get_bet(bet_name, bet_winning_numbers))
+        if self.has_bet(name=bet_name):
+            self.remove(self.get_bet(name=bet_name,
+                                     winning_numbers=bet_winning_numbers))
 
     def add_strategy_bets(self) -> None:
         """ Implement the given betting strategy """
