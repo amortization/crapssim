@@ -347,20 +347,14 @@ class Field(Bet):
         self.losing_numbers: list[int] = [5, 6, 7, 8]
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
-        status: str | None = None
-        win_amount: float = 0.0
+        status = self.get_status(table.dice)
 
         if table.dice.total in self.triple_winning_numbers:
-            status = "win"
             win_amount = 3 * self.bet_amount
         elif table.dice.total in self.double_winning_numbers:
-            status = "win"
             win_amount = 2 * self.bet_amount
-        elif table.dice.total in self.winning_numbers:
-            status = "win"
-            win_amount = 1 * self.bet_amount
-        elif table.dice.total in self.losing_numbers:
-            status = "lose"
+        else:
+            win_amount = self.get_win_amount(status)
 
         return status, win_amount
 
