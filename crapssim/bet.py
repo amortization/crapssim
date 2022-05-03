@@ -609,7 +609,7 @@ class HardWay(Bet):
     def get_status(self, dice: Dice) -> str | None:
         if dice.result == self.winning_result:
             return "win"
-        elif dice.total in [self.number, 7]:
+        if dice.total in [self.number, 7]:
             return "lose"
         return None
 
