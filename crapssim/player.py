@@ -71,24 +71,63 @@ class Player:
 
     @property
     def total_bet_amount(self) -> float:
+        """
+        Total amount of bets player currently has on the table.
+
+        Returns
+        -------
+        float
+            Total amount of bets player currently has on the table.
+        """
         return sum(bet.bet_amount for bet in self.bets_on_table)
 
-    def sit_at_table(self, table: "Table"):
+    def sit_at_table(self, table: "Table") -> None:
+        """
+        Adds player to the given table.
+
+        Parameters
+        ----------
+        table : Table
+            The Table for the player to sit at.
+        """
         table.add_player(self)
 
     def bet(self, bet_object: Bet) -> None:
+        """
+        Places the bet given on the table if able to do so.
+
+        Parameters
+        ----------
+        bet_object : Bet
+            The bet to place.
+        """
         if self.can_bet(bet_object) is False:
             return
 
         self.bankroll -= bet_object.bet_amount
 
-        if self.has_bet(name=bet_object.name, winning_numbers=bet_object.winning_numbers):
-            existing_bet: Bet = self.get_bet(name=bet_object.name, winning_numbers=bet_object.winning_numbers)
+        if self.has_bet(name=bet_object.name,
+                        winning_numbers=bet_object.winning_numbers):
+            existing_bet: Bet = self.get_bet(name=bet_object.name,
+                                             winning_numbers=bet_object.winning_numbers)
             existing_bet.bet_amount += bet_object.bet_amount
         else:
             self.bets_on_table.append(bet_object)
 
-    def can_bet(self, bet_object: Bet):
+    def can_bet(self, bet_object: Bet) -> bool:
+        """
+        Is True if the given bet object can be placed, otherwise False.
+
+        Parameters
+        ----------
+        bet_object : Bet
+            The bet to check whether it can be placed or not.
+
+        Returns
+        -------
+        bool
+            True if bet can be placed, otherwise False.
+        """
         if self.table is None:
             raise NoTableError
 
@@ -100,20 +139,34 @@ class Player:
         return can_bet
 
     def remove_bet(self, bet_object: Bet) -> None:
+        """
+        Remove the given bet and increase bankroll by bet amount.
+
+        Parameters
+        ----------
+        bet_object : Bet
+            The bet to remove.
+        """
         if bet_object in self.bets_on_table and bet_object.removable:
             self.bankroll += bet_object.bet_amount
             self.bets_on_table.remove(bet_object)
 
-    def has_bet(self, name: str | None = None, names: list[str] | None = None, winning_numbers: list[int] | None = None,
+    def has_bet(self, name: str | None = None, names: list[str] | None = None,
+                winning_numbers: list[int] | None = None,
                 losing_numbers: list[int] | None = None) -> bool:
         """
         Returns True if there is a bet whose name is in bets_to_check
         """
         return len(
-            self.get_bets(name=name, names=names, winning_numbers=winning_numbers, losing_numbers=losing_numbers)) > 0
+            self.get_bets(name=name, names=names,
+                          winning_numbers=winning_numbers,
+                          losing_numbers=losing_numbers)
+        ) > 0
 
-    def get_bets(self, name: str | None = None, names: list[str] | None = None,
-                 winning_numbers: list[int] | None = None, losing_numbers: list[int] | None = None) -> list[Bet]:
+    def get_bets(self, name: str | None = None,
+                 names: list[str] | None = None,
+                 winning_numbers: list[int] | None = None,
+                 losing_numbers: list[int] | None = None) -> list[Bet]:
         """
         Return a list of bets on table for player given the
         parameters of the bet. If a parameter is None, that parameter
@@ -146,19 +199,40 @@ class Player:
             bets = filter(lambda x: x.losing_numbers == losing_numbers, bets)
         return list(bets)
 
-    def get_bet(self, name: str | None = None, names: list[str] | None = None, winning_numbers: list[int] | None = None,
+    def get_bet(self, name: str | None = None,
+                names: list[str] | None = None,
+                winning_numbers: list[int] | None = None,
                 losing_numbers: list[int] | None = None) -> Bet:
         """Returns the first bet where all the criteria match"""
-        return self.get_bets(name=name, names=names, winning_numbers=winning_numbers, losing_numbers=losing_numbers)[0]
+        return self.get_bets(name=name,
+                             names=names,
+                             winning_numbers=winning_numbers,
+                             losing_numbers=losing_numbers)[0]
 
-    def number_of_bets(self, name: str | None = None, names: list[str] | None = None,
-                       winning_numbers: list[int] | None = None, losing_numbers: list[int] | None = None) -> int:
+    def number_of_bets(self, name: str | None = None,
+                       names: list[str] | None = None,
+                       winning_numbers: list[int] | None = None,
+                       losing_numbers: list[int] | None = None) -> int:
         """ returns the total number of bets in self.bets_on_table that match bets_to_check """
         return len(
-            self.get_bets(name=name, names=names, winning_numbers=winning_numbers, losing_numbers=losing_numbers))
+            self.get_bets(name=name,
+                          names=names,
+                          winning_numbers=winning_numbers,
+                          losing_numbers=losing_numbers)
+        )
 
-    def remove_if_present(self, bet_name: str, bet_winning_numbers: str = None) -> None:
-        if self.has_bet(name=bet_name):
+    def remove_if_present(self, bet_name: str, bet_winning_numbers: list[int] = None) -> None:
+        """
+        If a bet with the given name and numbers exists, remove it.
+
+        Parameters
+        ----------
+        bet_name : str
+            Bet name to check against.
+        bet_winning_numbers : list[int]
+            Winning numbers to check against.
+        """
+        if self.has_bet(name=bet_name, winning_numbers=bet_winning_numbers):
             self.remove_bet(self.get_bet(name=bet_name, winning_numbers=bet_winning_numbers))
 
     def add_strategy_bets(self) -> None:
@@ -171,6 +245,14 @@ class Player:
 
     def update_bet(self, verbose: bool = False) -> \
             dict[str, dict[str, float | str | None]]:
+        """
+        Update all of this player's bets on table with the tables dice roll.
+
+        Parameters
+        ----------
+        verbose : bool
+            If True print out description of the bets being won, lost, etc.
+        """
         if self.table is None:
             raise NoTableError
 
