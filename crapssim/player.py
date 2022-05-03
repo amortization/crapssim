@@ -232,23 +232,27 @@ class Player:
             raise NoTableError
 
         info = {}
-        for b in self.bets_on_table[:]:
+
+        new_bets_on_table = []
+        for b in self.bets_on_table:
             status, win_amount = b.update_bet(self.table)
 
             if status == "win":
                 self.bankroll += win_amount + b.bet_amount
-                self.bets_on_table.remove(b)
                 if verbose:
                     print(f"{self.name} won ${win_amount} on {b.name} bet!")
             elif status == "lose":
-                self.bets_on_table.remove(b)
                 if verbose:
                     print(f"{self.name} lost ${b.bet_amount} on {b.name} bet.")
             elif status == "push":
                 self.bankroll += b.bet_amount
-                self.bets_on_table.remove(b)
                 if verbose:
                     print(f"{self.name} pushed ${b.bet_amount} on {b.name} bet.")
+            else:
+                new_bets_on_table.append(b)
 
             info[b.name] = {"status": status, "win_amount": win_amount}
+
+        self.bets_on_table = new_bets_on_table
+
         return info
