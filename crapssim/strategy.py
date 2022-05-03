@@ -356,7 +356,7 @@ def place68_2come(player: 'Player', table: 'Table') -> None:
     if player.has_bet("PassLine"):
         pass_come_winning_numbers += player.get_bet("PassLine").winning_numbers
     if player.has_bet("Come"):
-        pass_come_winning_numbers += player.get_bet("Come", "Any").winning_numbers
+        pass_come_winning_numbers += player.get_bet("Come", None).winning_numbers
 
     if 6 in pass_come_winning_numbers:
         if player.has_bet("Place6"):
@@ -669,7 +669,7 @@ def place68_dont_come2odds(player: 'Player', table: 'Table') -> None:
 
     dont_come_losing_numbers = []
     if player.has_bet("DontCome"):
-        dont_come_losing_numbers += player.get_bet("DontCome", "Any").losing_numbers
+        dont_come_losing_numbers += player.get_bet("DontCome", None).losing_numbers
 
     if 6 in dont_come_losing_numbers:
         if player.has_bet("Place6"):
@@ -686,7 +686,7 @@ def place68_dont_come2odds(player: 'Player', table: 'Table') -> None:
         player.bet(DontCome(player.unit))
 
     if player.has_bet("DontCome"):
-        dc: Bet = player.get_bet("DontCome", "Any")
+        dc: Bet = player.get_bet("DontCome", None)
 
         if not isinstance(dc, DontCome):
             raise TypeError
