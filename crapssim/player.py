@@ -7,6 +7,14 @@ if typing.TYPE_CHECKING:
     from crapssim.table import Table
 
 
+class NoTableError(Exception):
+    """
+    Exception raised when there is no table assigned to the player.
+    """
+    def __init__(self):
+        super().__init__('Player has no Table assigned.')
+
+
 class Player:
     """
     Player standing at the craps table
@@ -44,13 +52,13 @@ class Player:
                  bet_strategy: STRATEGY_TYPE = pass_line,
                  name: str = "Player",
                  unit: typing.SupportsFloat = 5,
-                 table: 'Table' = None):
-        self.bankroll: float = bankroll
+                 table: typing.Optional['Table'] = None):
+        self.bankroll: float = float(bankroll)
         self.bet_strategy: STRATEGY_TYPE = bet_strategy
         self.strategy_info: dict[str, typing.Any] = {}
         self.name: str = name
-        self.unit: typing.SupportsFloat = unit
-        self.table = None
+        self.unit: float = float(unit)
+        self.table: typing.Optional["Table"] = None
         if table is not None:
             self.sit_at_table(table)
 
@@ -61,6 +69,9 @@ class Player:
         table.add_player(self)
 
     def bet(self, bet_object: Bet) -> None:
+        if self.table is None:
+            raise NoTableError
+
         if self.table.point.status == 'Off' and not bet_object.can_be_placed_point_off:
             return
         if self.table.point.status == 'On' and not bet_object.can_be_placed_point_on:
@@ -110,11 +121,17 @@ class Player:
 
     def add_strategy_bets(self) -> None:
         """ Implement the given betting strategy """
+        if self.table is None:
+            raise NoTableError
+
         if self.bet_strategy:
             self.bet_strategy(self, self.table, **self.strategy_info)
 
     def update_bet(self, verbose: bool = False) -> \
-            dict[str, dict[str, str | None | float]]:
+            dict[str, dict[str, float | str | None]]:
+        if self.table is None:
+            raise NoTableError
+
         info = {}
         for b in self.bets_on_table[:]:
             status, win_amount = b.update_bet(self.table, self.table.dice)

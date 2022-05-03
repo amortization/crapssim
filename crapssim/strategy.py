@@ -19,11 +19,15 @@ uses the methods from the player object.
 Fundamental Strategies
 """
 
-STRATEGY_TYPE = typing.Union[typing.Callable[['Player', 'Table', int, dict[str, int] | None], dict[str, int] | None],
-                             typing.Callable[['Player', 'Table', int, None], None]]
+STRATEGY_TYPE = typing.Union[typing.Callable[['Player', 'Table'], None],
+                             typing.Callable[['Player', 'Table', int | str], None],
+                             typing.Callable[['Player', 'Table', bool, typing.Iterable[int] | None], None],
+                             typing.Callable[['Player', 'Table', str | None], None],
+                             typing.Callable[['Player', 'Table', float], None],
+                             typing.Callable[['Player', 'Table', int], None]]
 
 
-def pass_line(player: 'Player', table: 'Table'):
+def pass_line(player: 'Player', table: 'Table') -> None:
     """ If the point is off place a bet on the Pass Line.
 
     Parameters
@@ -71,15 +75,17 @@ def pass_line_odds(player: 'Player', table: 'Table', mult: int | str = 1) -> Non
                 mult = 4
             elif table.point.number in [6, 8]:
                 mult = 5
+    elif isinstance(mult, str):
+        raise NotImplementedError
     else:
-        mult = float(mult)
+        mult = mult
 
     if (
             table.point == "On"
             and player.has_bet("PassLine")
             and not player.has_bet("Odds")
     ):
-        player.bet(Odds(float(mult * player.unit), player.get_bet("PassLine")))
+        player.bet(Odds(float(mult) * player.unit, player.get_bet("PassLine")))
 
 
 def pass_line_odds2(player: 'Player', table: 'Table') -> None:
@@ -140,7 +146,8 @@ def pass2come(player: 'Player', table: 'Table') -> None:
         player.bet(Come(player.unit))
 
 
-def place(player: 'Player', table: 'Table', skip_point: bool = True, numbers: set[int] | None = None) -> \
+def place(player: 'Player', table: 'Table', skip_point: bool = True,
+          numbers: typing.Iterable[int] | None = None) -> \
         None:
     """ Place bets, ie 3, 4, 5, 6, 8, 9, 10
 
@@ -164,7 +171,7 @@ def place(player: 'Player', table: 'Table', skip_point: bool = True, numbers: se
         """
 
     if numbers is None:
-        numbers: set[int] = {6, 8}
+        numbers = {6, 8}
 
     numbers = set(numbers).intersection({4, 5, 6, 8, 9, 10})
 
@@ -273,12 +280,11 @@ def lay_odds(player: 'Player', table: 'Table', win_mult: int | str = 1) -> None:
     # well to the max_odds on a table.
     # For `win_mult` = "345", this assumes max of 3-4-5x odds
     dont_pass(player, table)
-    mult = 1
+    mult = 1.0
     # Lay odds for don't pass
     if win_mult == "345":
         mult = 6.0
-    else:
-        win_mult = float(win_mult)
+    elif isinstance(win_mult, int):
         if table.point == "On":
             if table.point.number in [4, 10]:
                 mult = 2 * win_mult
@@ -394,7 +400,7 @@ def iron_cross(player: 'Player', table: 'Table', mult: int | str = 1) -> None:
             ))
 
 
-def hammerlock(player: 'Player', table: 'Table', mode: str | None = None) -> dict[str, str]:
+def hammerlock(player: 'Player', table: 'Table', mode: str | None = None) -> None:
     """ Pass Line Bet, Don't Pass bet with a lay of odds. A phased place bet approach, starting inside and then
         shifting outside eventually taking bet down if two place bets win.
 
@@ -458,7 +464,7 @@ def hammerlock(player: 'Player', table: 'Table', mode: str | None = None) -> dic
     player.strategy_info['mode'] = mode
 
 
-def risk12(player: 'Player', table: 'Table', winnings: typing.SupportsFloat = 0) -> dict[str, int]:
+def risk12(player: 'Player', table: 'Table', winnings: float = 0) -> None:
     """ Pass line and field bet before the point is established. Once the point is established place the 6 and 8.
 
         Parameters
@@ -478,7 +484,7 @@ def risk12(player: 'Player', table: 'Table', winnings: typing.SupportsFloat = 0)
     pass_line(player, table)
 
     if table.pass_rolls == 0:
-        winnings = 0
+        winnings = 0.0
 
     if table.point == "Off":
         if table.last_roll in table.payouts["fielddouble"]:
@@ -506,7 +512,7 @@ def risk12(player: 'Player', table: 'Table', winnings: typing.SupportsFloat = 0)
         # lost field bet, so can't automatically cover the 6/8 bets.  Need to rely on potential early winnings
         if winnings >= 2 * player.unit:
             place(player, table, numbers={6, 8})
-        elif winnings >= 1 * player.unit:
+        elif winnings >= 1.0 * player.unit:
             if table.point.number != 6:
                 place(player, table, numbers={6})
             else:
@@ -534,7 +540,7 @@ def knockout(player: 'Player', table: 'Table') -> None:
     dont_pass(player, table)
 
 
-def dice_doctor(player: 'Player', table: 'Table', progression: int = 0) -> dict[str, int]:
+def dice_doctor(player: 'Player', table: 'Table', progression: int = 0) -> None:
     """ Field bet with a progression if you win.
 
         Parameters
@@ -679,7 +685,7 @@ def place68_dont_come2odds(player: 'Player', table: 'Table') -> None:
 
         if not isinstance(dc, DontCome):
             raise TypeError
-        mult = 1
+        mult: typing.SupportsFloat = 1
         win_mult: int | float = 2
         # Lay odds for don't come
         if win_mult == "345":
@@ -697,7 +703,7 @@ def place68_dont_come2odds(player: 'Player', table: 'Table') -> None:
                     mult = 6 / 5 * win_mult
 
         if not player.has_bet("LayOdds") and not dc.pre_point:
-            player.bet(LayOdds(mult * player.unit, dc))
+            player.bet(LayOdds(float(mult) * float(player.unit), dc))
 
 
 if __name__ == "__main__":

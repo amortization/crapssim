@@ -111,7 +111,7 @@ class Table(object):
 
         Parameters
         ----------
-        max_shooter : float | int
+        max_shooter : typing.SupportsFloat | int
             Maximum number of shooters to run for
         max_rolls : int
             Maximum number of rolls to run for
@@ -210,7 +210,7 @@ class Table(object):
             print("Dice out!")
             print(f"Shooter rolled {self.dice.total} {self.dice.result}")
 
-    def should_keep_rolling(self, max_rolls: int, max_shooter: int, run_out: bool) -> bool:
+    def should_keep_rolling(self, max_rolls: int | float, max_shooter: int | float, run_out: bool) -> bool:
         """
         Determines whether the program should keep running or not.
 
@@ -366,21 +366,25 @@ class Point:
             raise NotImplementedError
 
     def __gt__(self, other: object) -> bool:
-        if isinstance(other, str):
+        if self.number is None:
+            raise NotImplementedError
+        elif isinstance(other, str):
             return self.number > int(other)
         elif isinstance(other, int):
             return self.number > other
-        elif isinstance(other, Point):
+        elif isinstance(other, Point) and other.number is not None:
             return self.number > other.number
         else:
             raise NotImplementedError
 
     def __lt__(self, other: object) -> bool:
-        if isinstance(other, str):
+        if self.number is None:
+            raise NotImplementedError
+        elif isinstance(other, str):
             return self.number < int(other)
         elif isinstance(other, int):
             return self.number < other
-        elif isinstance(other, Point):
+        elif isinstance(other, Point) and other.number is not None:
             return self.number < other.number
         else:
             raise NotImplementedError
