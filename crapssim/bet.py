@@ -68,10 +68,6 @@ class Bet(ABC):
         Ratio that bet pays out on a win
     removable : bool
         Whether the bet can be removed or not
-    can_be_placed_point_on : bool
-        Whether the bet can be placed when the point is on
-    can_be_placed_point_off : bool
-        Whether the bet can be placed when the point is off
     """
 
     def __init__(self, bet_amount: typing.SupportsFloat):
@@ -80,8 +76,7 @@ class Bet(ABC):
         self.number_statuses: dict[int: str | None] = {x: None for x in range(2, 13)}
         self.payout_ratio: typing.SupportsFloat = float(1)
         self.removable: bool = True
-        self.can_be_placed_point_on = True
-        self.can_be_placed_point_off = True
+        self.bet_allowed: dict = {'On': True, 'Off': True}
 
     @property
     def name(self):
@@ -190,7 +185,7 @@ class PassLine(Bet):
         self.losing_numbers: list[int] = [2, 3, 12]
         self.payout_ratio: typing.SupportsFloat = 1.0
         self.pre_point: bool = True
-        self.can_be_placed_point_on = False
+        self.bet_allowed['On'] = False
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status: str | None = self.get_status(table.dice)
@@ -214,10 +209,11 @@ class Come(PassLine):
     bet_amount : typing.SupportsFloat
         Wagered amount for the bet
     """
-    def __init__(self, bet_amount: typing.SupportsFloat):
-        super().__init__(float(bet_amount))
-        self.can_be_placed_point_off = False
-        self.can_be_placed_point_on = True
+
+    def __init__(self, bet_amount: float):
+        super().__init__(bet_amount)
+        self.bet_allowed['On'] = True
+        self.bet_allowed['Off'] = False
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status, win_amount = super().update_bet(table)
@@ -422,7 +418,7 @@ class DontPass(Bet):
         self.push_numbers: list[int] = [12]
         self.payout_ratio: float = 1.0
         self.pre_point: bool = True
-        self.can_be_placed_point_on = False
+        self.bet_allowed['On'] = False
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status: str | None = None
@@ -455,8 +451,8 @@ class DontCome(DontPass):
     """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
-        self.can_be_placed_point_off = False
-        self.can_be_placed_point_on = True
+        self.bet_allowed['On'] = True
+        self.bet_allowed['Off'] = False
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status, win_amount = super().update_bet(table)

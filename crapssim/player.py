@@ -78,9 +78,7 @@ class Player:
         if self.table is None:
             raise NoTableError
 
-        if self.table.point.status == 'Off' and not bet_object.can_be_placed_point_off:
-            return
-        if self.table.point.status == 'On' and not bet_object.can_be_placed_point_on:
+        if not bet_object.bet_allowed[self.table.point.status]:
             return
 
         if self.bankroll >= bet_object.bet_amount:
