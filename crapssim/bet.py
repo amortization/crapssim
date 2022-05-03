@@ -53,13 +53,13 @@ class Bet(ABC):
         self.can_be_placed_point_on = True
         self.can_be_placed_point_off = True
 
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
         """
         Returns whether the bet's status is win, lose or None and if win the amount won.
 
         Parameters
         ----------
-        table_object : Table
+        table : Table
             The table to check the bet was made on.
 
         Returns
@@ -70,10 +70,10 @@ class Bet(ABC):
         status: str | None = None
         win_amount: float = 0.0
 
-        if table_object.dice.total in self.winning_numbers:
+        if table.dice.total in self.winning_numbers:
             status = "win"
             win_amount = float(self.payout_ratio) * self.bet_amount
-        elif table_object.dice.total in self.losing_numbers:
+        elif table.dice.total in self.losing_numbers:
             status = "lose"
 
         return status, win_amount
@@ -94,17 +94,17 @@ class PassLine(Bet):
         self.pre_point: bool = True
         self.can_be_placed_point_on = False
 
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status: str | None = None
         win_amount: typing.SupportsFloat = 0.0
 
-        if table_object.dice.total in self.winning_numbers:
+        if table.dice.total in self.winning_numbers:
             status = "win"
             win_amount = float(self.payout_ratio) * self.bet_amount
-        elif table_object.dice.total in self.losing_numbers:
+        elif table.dice.total in self.losing_numbers:
             status = "lose"
         elif self.pre_point:
-            self.winning_numbers = [table_object.dice.total]
+            self.winning_numbers = [table.dice.total]
             self.losing_numbers = [7]
             self.pre_point = False
             self.removable = False
@@ -119,8 +119,8 @@ class Come(PassLine):
         self.can_be_placed_point_off = False
         self.can_be_placed_point_on = True
 
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
-        status, win_amount = super().update_bet(table_object)
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
+        status, win_amount = super().update_bet(table)
         if not self.pre_point and self.sub_name == "":
             self.sub_name = "".join(str(e) for e in self.winning_numbers)
         return status, win_amount
@@ -159,10 +159,10 @@ Place Bets on 4,5,6,8,9,10
 
 
 class Place(Bet):
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
         # place bets are inactive when point is "Off"
-        if table_object.point == "On":
-            return super().update_bet(table_object)
+        if table.point == "On":
+            return super().update_bet(table)
         else:
             return None, 0
 
@@ -248,20 +248,20 @@ class Field(Bet):
         self.winning_numbers: list[int] = [2, 3, 4, 9, 10, 11, 12]
         self.losing_numbers: list[int] = [5, 6, 7, 8]
 
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status: str | None = None
         win_amount: float = 0.0
 
-        if table_object.dice.total in self.triple_winning_numbers:
+        if table.dice.total in self.triple_winning_numbers:
             status = "win"
             win_amount = 3 * self.bet_amount
-        elif table_object.dice.total in self.double_winning_numbers:
+        elif table.dice.total in self.double_winning_numbers:
             status = "win"
             win_amount = 2 * self.bet_amount
-        elif table_object.dice.total in self.winning_numbers:
+        elif table.dice.total in self.winning_numbers:
             status = "win"
             win_amount = 1 * self.bet_amount
-        elif table_object.dice.total in self.losing_numbers:
+        elif table.dice.total in self.losing_numbers:
             status = "lose"
 
         return status, win_amount
@@ -283,20 +283,20 @@ class DontPass(Bet):
         self.pre_point: bool = True
         self.can_be_placed_point_on = False
 
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status: str | None = None
         win_amount: float = 0.0
 
-        if table_object.dice.total in self.winning_numbers:
+        if table.dice.total in self.winning_numbers:
             status = "win"
             win_amount = self.payout_ratio * self.bet_amount
-        elif table_object.dice.total in self.losing_numbers:
+        elif table.dice.total in self.losing_numbers:
             status = "lose"
-        elif table_object.dice.total in self.push_numbers:
+        elif table.dice.total in self.push_numbers:
             status = "push"
         elif self.pre_point:
             self.winning_numbers = [7]
-            self.losing_numbers = [table_object.dice.total]
+            self.losing_numbers = [table.dice.total]
             self.push_numbers = []
             self.pre_point = False
 
@@ -310,8 +310,8 @@ class DontCome(DontPass):
         self.can_be_placed_point_off = False
         self.can_be_placed_point_on = True
 
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
-        status, win_amount = super().update_bet(table_object)
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
+        status, win_amount = super().update_bet(table)
         if not self.pre_point and self.sub_name == "":
             self.sub_name = "".join(str(e) for e in self.losing_numbers)
         return status, win_amount
@@ -404,20 +404,20 @@ class CAndE(Bet):
         self.winning_numbers: list[int] = [2, 3, 11, 12]
         self.losing_numbers: list[int] = [4, 5, 6, 7, 8, 9, 10]
 
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status: str | None = None
         win_amount: float = 0.0
 
-        if table_object.dice.total in self.winning_numbers:
+        if table.dice.total in self.winning_numbers:
             status = "win"
-            if table_object.dice.total in [2, 3, 12]:
+            if table.dice.total in [2, 3, 12]:
                 payout_ratio = 3
-            elif table_object.dice.total in [11]:
+            elif table.dice.total in [11]:
                 payout_ratio = 7
             else:
                 raise NotImplementedError
             win_amount = payout_ratio * self.bet_amount
-        elif table_object.dice.total in self.losing_numbers:
+        elif table.dice.total in self.losing_numbers:
             status = "lose"
 
         return status, win_amount
@@ -438,14 +438,14 @@ class HardWay(Bet):
         self.number: int | None = None
         self.winning_result: list[int | None] = [None, None]
 
-    def update_bet(self, table_object: "Table") -> tuple[str | None, float]:
+    def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status: str | None = None
         win_amount: float = 0.0
 
-        if table_object.dice.result == self.winning_result:
+        if table.dice.result == self.winning_result:
             status = "win"
             win_amount = float(self.payout_ratio) * self.bet_amount
-        elif table_object.dice.total in [self.number, 7]:
+        elif table.dice.total in [self.number, 7]:
             status = "lose"
 
         return status, win_amount
