@@ -232,11 +232,11 @@ def place68(player: 'Player', table: 'Table') -> None:
     pass_line(player, table)
     # Place 6 and 8 when point is ON
     p_has_place_bets = player.has_bet(names=["Place4",
-                                              "Place5",
-                                              "Place6",
-                                              "Place8",
-                                              "Place9",
-                                              "Place10"])
+                                             "Place5",
+                                             "Place6",
+                                             "Place8",
+                                             "Place9",
+                                             "Place10"])
     if table.point == "On" and not p_has_place_bets:
         if table.point.number == 6:
             player.bet(Place8(6 / 5 * player.unit))
