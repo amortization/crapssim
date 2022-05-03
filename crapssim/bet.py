@@ -139,21 +139,16 @@ class PassLine(Bet):
         self.can_be_placed_point_on = False
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
-        status: str | None = None
-        win_amount: typing.SupportsFloat = 0.0
+        status: str | None = self.get_status(table.dice)
+        win_amount: typing.SupportsFloat = self.get_win_amount(status)
 
-        if table.dice.total in self.winning_numbers:
-            status = "win"
-            win_amount = float(self.payout_ratio) * self.bet_amount
-        elif table.dice.total in self.losing_numbers:
-            status = "lose"
-        elif self.pre_point:
+        if self.pre_point:
             self.winning_numbers = [table.dice.total]
             self.losing_numbers = [7]
             self.pre_point = False
             self.removable = False
 
-        return status, float(win_amount)
+        return status, win_amount
 
 
 class Come(PassLine):
