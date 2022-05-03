@@ -28,15 +28,15 @@ from crapssim.table import Table, Point
     (crapssim.bet.Hard10(1), -0.0278),
 ])
 def test_ev_oneroll(bet, ev):
-    d = Dice()
     t = Table()
+    d = t.dice
     t.point.status = "On"  # for place bets to pay properly
 
     outcomes = []
     for d1 in range(1, 7):
         for d2 in range(1, 7):
             d.fixed_roll([d1, d2])
-            status, win_amt = bet.update_bet(t, d)
+            status, win_amt = bet.update_bet(t)
 
             outcomes.append(win_amt if status == "win" else -1 if status == "lose" else 0)
 
