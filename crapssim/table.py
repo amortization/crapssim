@@ -1,3 +1,9 @@
+"""
+This module contains the Table object which Players are added to and Bets are
+Placed. Dice are then rolled by the table in order to get the outcomes of those
+bets.
+"""
+
 import typing
 
 from crapssim.dice import Dice

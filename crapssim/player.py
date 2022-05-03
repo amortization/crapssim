@@ -1,3 +1,9 @@
+"""
+This module contains the Player class which sit at the Table and
+place Bets on the table. Each player has a strategy assigned which
+controls the actions of the player.
+"""
+
 import typing
 
 from crapssim.bet import Bet

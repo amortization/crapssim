@@ -1,3 +1,8 @@
+"""
+This module contains some default basic strategies that can be added to the
+Players.
+"""
+
 import typing
 
 from crapssim.bet import DontPass, LayOdds, DontCome

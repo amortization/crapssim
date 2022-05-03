@@ -1,3 +1,9 @@
+"""
+This module contains classes for all the different types of
+bets found on the Craps table. These bets are what get placed on the table
+by a Player and are updated as the dice are rolled.
+"""
+
 import typing
 from abc import ABC
 

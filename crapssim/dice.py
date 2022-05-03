@@ -1,3 +1,8 @@
+"""
+This module contains the Dice class. These Dice are what are rolled on the
+table and control the outcome and updates of the table bets.
+"""
+
 import typing
 
 from numpy import random as r
