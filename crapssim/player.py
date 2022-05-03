@@ -51,8 +51,6 @@ class Player:
         Standard amount of bet to be used by bet_strategy
     bets_on_table : list
         Betting objects for the player that are currently on the table.
-    total_bet_amount : int
-        Sum of bet value for the player
     """
 
     def __init__(self, bankroll: typing.SupportsFloat,
@@ -107,7 +105,7 @@ class Player:
             self.bankroll += bet_object.bet_amount
             self.bets_on_table.remove(bet_object)
 
-    def has_bet(self, *bets_to_check: str) -> bool:
+    def has_bets(self, *bets_to_check: str) -> bool:
         """
         returns True if bets_to_check and self.bets_on_table has at least one thing in common
         """
@@ -176,7 +174,7 @@ class Player:
         return sum([i in bets_to_check for i in bet_names])
 
     def remove_if_present(self, bet_name: str, bet_winning_numbers: str = None) -> None:
-        if self.has_bet(bet_name):
+        if self.has_bets(bet_name):
             self.remove(self.get_bet(bet_name, bet_winning_numbers))
 
     def add_strategy_bets(self) -> None:
