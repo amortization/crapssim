@@ -601,16 +601,17 @@ class HardWay(Bet):
         self.winning_result: list[int | None] = [None, None]
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
-        status: str | None = None
-        win_amount: float = 0.0
-
-        if table.dice.result == self.winning_result:
-            status = "win"
-            win_amount = float(self.payout_ratio) * self.bet_amount
-        elif table.dice.total in [self.number, 7]:
-            status = "lose"
+        status: str | None = self.get_status(table.dice)
+        win_amount: float = self.get_win_amount(status)
 
         return status, win_amount
+
+    def get_status(self, dice: Dice) -> str | None:
+        if dice.result == self.winning_result:
+            return "win"
+        elif dice.total in [self.number, 7]:
+            return "lose"
+        return None
 
 
 class Hard4(HardWay):
