@@ -92,35 +92,35 @@ class Player:
         """
         table.add_player(self)
 
-    def bet(self, bet_object: Bet) -> None:
+    def bet(self, bet: Bet) -> None:
         """
         Places the bet given on the table if able to do so.
 
         Parameters
         ----------
-        bet_object : Bet
+        bet : Bet
             The bet to place.
         """
-        if self.can_bet(bet_object) is False:
+        if self.can_bet(bet) is False:
             return
 
-        self.bankroll -= bet_object.bet_amount
+        self.bankroll -= bet.bet_amount
 
-        if self.has_bet(name=bet_object.name,
-                        winning_numbers=bet_object.winning_numbers):
-            existing_bet: Bet = self.get_bet(name=bet_object.name,
-                                             winning_numbers=bet_object.winning_numbers)
-            existing_bet.bet_amount += bet_object.bet_amount
+        if self.has_bet(name=bet.name,
+                        winning_numbers=bet.winning_numbers):
+            existing_bet: Bet = self.get_bet(name=bet.name,
+                                             winning_numbers=bet.winning_numbers)
+            existing_bet.bet_amount += bet.bet_amount
         else:
-            self.bets_on_table.append(bet_object)
+            self.bets_on_table.append(bet)
 
-    def can_bet(self, bet_object: Bet) -> bool:
+    def can_bet(self, bet: Bet) -> bool:
         """
         Is True if the given bet object can be placed, otherwise False.
 
         Parameters
         ----------
-        bet_object : Bet
+        bet : Bet
             The bet to check whether it can be placed or not.
 
         Returns
@@ -132,24 +132,24 @@ class Player:
             raise NoTableError
 
         can_bet = True
-        if not bet_object.bet_allowed[self.table.point.status]:
+        if not bet.bet_allowed[self.table.point.status]:
             can_bet = False
-        if self.bankroll < bet_object.bet_amount:
+        if self.bankroll < bet.bet_amount:
             can_bet = False
         return can_bet
 
-    def remove_bet(self, bet_object: Bet) -> None:
+    def remove_bet(self, bet: Bet) -> None:
         """
         Remove the given bet and increase bankroll by bet amount.
 
         Parameters
         ----------
-        bet_object : Bet
+        bet : Bet
             The bet to remove.
         """
-        if bet_object in self.bets_on_table and bet_object.removable:
-            self.bankroll += bet_object.bet_amount
-            self.bets_on_table.remove(bet_object)
+        if bet in self.bets_on_table and bet.removable:
+            self.bankroll += bet.bet_amount
+            self.bets_on_table.remove(bet)
 
     def has_bet(self, name: str | None = None, names: list[str] | None = None,
                 winning_numbers: list[int] | None = None,

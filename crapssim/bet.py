@@ -230,7 +230,7 @@ class Odds(Bet):
         super().__init__(bet_amount)
 
         if not isinstance(bet_object, PassLine) and not isinstance(bet_object, Come):
-            raise TypeError('bet_object must be either a PassLine or Come Bet.')
+            raise TypeError('bet must be either a PassLine or Come Bet.')
         if isinstance(bet_object, PassLine):
             self.can_be_placed_point_off = False
 
