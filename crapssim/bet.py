@@ -570,20 +570,14 @@ class CAndE(Bet):
         self.losing_numbers: list[int] = [4, 5, 6, 7, 8, 9, 10]
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
-        status: str | None = None
-        win_amount: float = 0.0
+        status: str | None = self.get_status(table.dice)
 
-        if table.dice.total in self.winning_numbers:
-            status = "win"
-            if table.dice.total in [2, 3, 12]:
-                payout_ratio = 3
-            elif table.dice.total in [11]:
-                payout_ratio = 7
-            else:
-                raise NotImplementedError
-            win_amount = payout_ratio * self.bet_amount
-        elif table.dice.total in self.losing_numbers:
-            status = "lose"
+        if table.dice.total in [2, 3, 12]:
+            self.payout_ratio = 3
+        elif table.dice.total in [11]:
+            self.payout_ratio = 7
+
+        win_amount: float = self.get_win_amount(status)
 
         return status, win_amount
 
