@@ -13,6 +13,42 @@ if typing.TYPE_CHECKING:
     from crapssim.table import Table
 
 
+def _check_valid_dice_total(dice_number: int):
+    """
+    Ensure that the given dice number is a valid Craps dice roll (2-12)
+
+    Parameters
+    ----------
+    dice_number : int
+        Total of a roll to check.
+
+    Raises
+    ------
+    ValueError
+        If dice_number is not a valid craps roll (2-12)
+    """
+    if dice_number not in range(2, 13):
+        raise ValueError(f'{dice_number} not a valid Craps dice roll.')
+
+
+def _check_valid_dice_totals(dice_numbers: typing.Iterable[int]):
+    """
+    Ensure that all numbers in a list of numbers are valid craps rolls (2-12)
+
+    Parameters
+    ----------
+    dice_numbers : int
+        Total of a roll to check
+
+    Raises
+    ------
+    ValueError
+        If a number is not a valid craps roll (2-12)
+    """
+    for dice_number in dice_numbers:
+        _check_valid_dice_total(dice_number)
+
+
 class Bet(ABC):
     """
     A generic bet for the craps table
@@ -30,10 +66,6 @@ class Bet(ABC):
         Name for the bet
     sub_name : string
         Sub-name, usually denotes number for a come/don't come bet
-    winning_numbers : list
-        Numbers to roll for this bet to win
-    losing_numbers : list
-        Numbers to roll that cause this bet to lose
     payout_ratio : typing.SupportsFloat
         Ratio that bet pays out on a win
     removable : bool
@@ -48,12 +80,37 @@ class Bet(ABC):
         self.bet_amount: float = float(bet_amount)
         self.name: str = str()
         self.sub_name: str = str()
-        self.winning_numbers: list[int] = []
-        self.losing_numbers: list[int] = []
+        self.number_statuses: dict[int: str | None] = {x: None for x in range(2, 13)}
         self.payout_ratio: typing.SupportsFloat = float(1)
         self.removable: bool = True
         self.can_be_placed_point_on = True
         self.can_be_placed_point_off = True
+
+    @property
+    def winning_numbers(self) -> list[int]:
+        """Numbers to roll for this bet to win."""
+        return [x for x in self.number_statuses if self.number_statuses[x] == 'win']
+
+    @winning_numbers.setter
+    def winning_numbers(self, winning_numbers: list[int]) -> None:
+        _check_valid_dice_totals(winning_numbers)
+        self.number_statuses.update(
+            (k, None) for k in self.number_statuses if self.number_statuses[k] == 'win'
+        )
+        self.number_statuses.update((k, 'win') for k in winning_numbers)
+
+    @property
+    def losing_numbers(self) -> list[int]:
+        """Numbers to roll for this bet to lose."""
+        return [x for x in self.number_statuses if self.number_statuses[x] == 'lose']
+
+    @losing_numbers.setter
+    def losing_numbers(self, losing_numbers: list[int]) -> list[int]:
+        _check_valid_dice_totals(losing_numbers)
+        self.number_statuses.update(
+            (k, None) for k in self.number_statuses if self.number_statuses[k] == 'lose'
+        )
+        self.number_statuses.update((k, 'lose') for k in losing_numbers)
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
         """
@@ -88,11 +145,7 @@ class Bet(ABC):
         str | None
             Either "win", "lose", or None as the status depending on the dice.
         """
-        if dice.total in self.winning_numbers:
-            return "win"
-        if dice.total in self.losing_numbers:
-            return "lose"
-        return None
+        return self.number_statuses[dice.total]
 
     def get_win_amount(self, status: str | None) -> float:
         """
