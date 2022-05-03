@@ -69,16 +69,51 @@ class Bet(ABC):
         tuple[str | None, float]
             The status of the bet and the amount of the winnings.
         """
-        status: str | None = None
-        win_amount: float = 0.0
-
-        if table.dice.total in self.winning_numbers:
-            status = "win"
-            win_amount = float(self.payout_ratio) * self.bet_amount
-        elif table.dice.total in self.losing_numbers:
-            status = "lose"
+        status: str | None = self.get_status(table.dice)
+        win_amount: float = self.get_win_amount(status)
 
         return status, win_amount
+
+    def get_status(self, dice: Dice) -> str | None:
+        """
+        Get the status of the bet based on the dice. Either win, lose or None.
+
+        Parameters
+        ----------
+        dice : Dice
+            The Dice whose number(s) get the status.
+
+        Returns
+        -------
+        str | None
+            Either "win", "lose", or None as the status depending on the dice.
+        """
+        if dice.total in self.winning_numbers:
+            return "win"
+        if dice.total in self.losing_numbers:
+            return "lose"
+        return None
+
+    def get_win_amount(self, status: str | None) -> float:
+        """
+        Gives the win amount based on the status of the dice.
+
+        Parameters
+        ----------
+        status : str | None
+            The bets status, either "win", "lose", or None.
+
+        Returns
+        -------
+        float
+            The amount of winnings of the bet.
+
+        """
+        if status is None or status == 'lose':
+            return 0.0
+        if status == 'win':
+            return float(self.payout_ratio) * self.bet_amount
+        raise NotImplementedError
 
 # Pass Line and Come bets
 
