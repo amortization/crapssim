@@ -104,18 +104,16 @@ class Player:
             self.bankroll += bet_object.bet_amount
             self.bets_on_table.remove(bet_object)
 
-    def has_bet(self, name: str | None = None, names: list[str] | None = None, winning_number: int | None = None,
-                winning_numbers: list[int] | None = None, losing_number: int | None = None,
+    def has_bet(self, name: str | None = None, names: list[str] | None = None, winning_numbers: list[int] | None = None,
                 losing_numbers: list[int] | None = None) -> bool:
         """
         Returns True if there is a bet whose name is in bets_to_check
         """
-        return len(self.get_bets(name=name, names=names, winning_number=winning_number, winning_numbers=winning_numbers,
-                                 losing_number=losing_number, losing_numbers=losing_numbers)) > 0
+        return len(
+            self.get_bets(name=name, names=names, winning_numbers=winning_numbers, losing_numbers=losing_numbers)) > 0
 
-    def get_bets(self, name: str | None = None, names: list[str] | None = None, winning_number: int | None = None,
-                 winning_numbers: list[int] | None = None, losing_number: int | None = None,
-                 losing_numbers: list[int] | None = None) -> list[Bet]:
+    def get_bets(self, name: str | None = None, names: list[str] | None = None,
+                 winning_numbers: list[int] | None = None, losing_numbers: list[int] | None = None) -> list[Bet]:
         """
         Return a list of bets on table for player given the
         parameters of the bet. If a parameter is None, that parameter
@@ -127,12 +125,8 @@ class Player:
             Returns bets where the name matches the given name.
         names : list[str] | None
             Returns bets where the name is in the given list of names.
-        winning_number : int | None
-            Returns bets where the winning number is included in the bets winning numbers.
         winning_numbers : list[int] | None
             Returns bets where the winning numbers match the given winning number.
-        losing_number : int | None
-            Returns bets where the losing number is included in the bets losing numbers.
         losing_numbers : list[int] | None
             Returns bets where the losing numbers match the given losing number.
 
@@ -146,29 +140,22 @@ class Player:
             bets = filter(lambda x: x.name == name, bets)
         if names is not None:
             bets = filter(lambda x: x.name in names, bets)
-        if winning_number is not None:
-            bets = filter(lambda x: winning_number in x.winning_numbers, bets)
         if winning_numbers is not None:
             bets = filter(lambda x: x.winning_numbers == winning_numbers, bets)
-        if losing_number is not None:
-            bets = filter(lambda x: losing_number in x.losing_numbers, bets)
         if losing_numbers is not None:
             bets = filter(lambda x: x.losing_numbers == losing_numbers, bets)
         return list(bets)
 
-    def get_bet(self, name: str | None = None, names: list[str] | None = None, winning_number: int | None = None,
-                winning_numbers: list[int] | None = None, losing_number: int | None = None,
+    def get_bet(self, name: str | None = None, names: list[str] | None = None, winning_numbers: list[int] | None = None,
                 losing_numbers: list[int] | None = None) -> Bet:
         """Returns the first bet where all the criteria match"""
-        return self.get_bets(name=name, names=names, winning_number=winning_number, winning_numbers=winning_numbers,
-                             losing_number=losing_number, losing_numbers=losing_numbers)[0]
+        return self.get_bets(name=name, names=names, winning_numbers=winning_numbers, losing_numbers=losing_numbers)[0]
 
-    def number_of_bets(self, name: str | None = None, names: list[str] | None = None, winning_number: int | None = None,
-                       winning_numbers: list[int] | None = None, losing_number: int | None = None,
-                       losing_numbers: list[int] | None = None) -> int:
+    def number_of_bets(self, name: str | None = None, names: list[str] | None = None,
+                       winning_numbers: list[int] | None = None, losing_numbers: list[int] | None = None) -> int:
         """ returns the total number of bets in self.bets_on_table that match bets_to_check """
-        return len(self.get_bets(name=name, names=names, winning_number=winning_number, winning_numbers=winning_numbers,
-                                 losing_number=losing_number, losing_numbers=losing_numbers))
+        return len(
+            self.get_bets(name=name, names=names, winning_numbers=winning_numbers, losing_numbers=losing_numbers))
 
     def remove_if_present(self, bet_name: str, bet_winning_numbers: str = None) -> None:
         if self.has_bet(name=bet_name):
