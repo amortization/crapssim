@@ -82,8 +82,7 @@ class Player:
 
         self.bankroll -= bet_object.bet_amount
 
-        if (bet_object.name, bet_object.winning_numbers) in \
-                [(b.name, b.winning_numbers) for b in self.bets_on_table]:
+        if self.has_bet(name=bet_object.name, winning_numbers=bet_object.winning_numbers):
             existing_bet: Bet = self.get_bet(name=bet_object.name,
                                              winning_numbers=bet_object.winning_numbers)
             existing_bet.bet_amount += bet_object.bet_amount
