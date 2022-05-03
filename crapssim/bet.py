@@ -148,7 +148,7 @@ class PassLine(Bet):
             self.pre_point = False
             self.removable = False
 
-        return status, win_amount
+        return status, float(win_amount)
 
 
 class Come(PassLine):
@@ -591,14 +591,24 @@ class HardWay(Bet):
     ----------
     number : int
         The relevant number that the bet wins and loses on (for hard ways)
-    winning_result : list(int)
-        The combination of dice the bet wins on
     """
 
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
-        self.number: int | None = None
-        self.winning_result: list[int | None] = [None, None]
+        self.number: int = 4
+
+    @property
+    def winning_result(self) -> list[int]:
+        """
+        The combination of dice face results the bet wins on.
+
+        Returns
+        -------
+        list[int]
+            The combination of dice face results the bet wins on.
+        """
+        die_face = int(self.number / 2)
+        return [die_face, die_face]
 
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
         status: str | None = self.get_status(table.dice)
@@ -621,7 +631,6 @@ class Hard4(HardWay):
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Hard4"
-        self.winning_result: list[int | None] = [2, 2]
         self.number: int = 4
         self.payout_ratio: int = 7
 
@@ -633,7 +642,6 @@ class Hard6(HardWay):
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Hard6"
-        self.winning_result: list[int | None] = [3, 3]
         self.number: int = 6
         self.payout_ratio: int = 9
 
@@ -645,7 +653,6 @@ class Hard8(HardWay):
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Hard8"
-        self.winning_result: list[int | None] = [4, 4]
         self.number: int = 8
         self.payout_ratio: int = 9
 
@@ -657,6 +664,5 @@ class Hard10(HardWay):
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Hard10"
-        self.winning_result: list[int | None] = [5, 5]
         self.number: int = 10
         self.payout_ratio: int = 7
