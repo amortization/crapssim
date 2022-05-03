@@ -92,27 +92,27 @@ class Player:
         """
         table.add_player(self)
 
-    def bet(self, bet_object: Bet) -> None:
+    def bet(self, bet: Bet) -> None:
         """
         Places the bet given on the table if able to do so.
 
         Parameters
         ----------
-        bet_object : Bet
+        bet : Bet
             The bet to place.
         """
-        if self.can_bet(bet_object) is False:
+        if self.can_bet(bet) is False:
             return
 
-        self.bankroll -= bet_object.bet_amount
+        self.bankroll -= bet.bet_amount
 
-        if self.has_bet(name=bet_object.name,
-                        winning_numbers=bet_object.winning_numbers):
-            existing_bet: Bet = self.get_bet(name=bet_object.name,
-                                             winning_numbers=bet_object.winning_numbers)
-            existing_bet.bet_amount += bet_object.bet_amount
+        if self.has_bet(name=bet.name,
+                        winning_numbers=bet.winning_numbers):
+            existing_bet: Bet = self.get_bet(name=bet.name,
+                                             winning_numbers=bet.winning_numbers)
+            existing_bet.bet_amount += bet.bet_amount
         else:
-            self.bets_on_table.append(bet_object)
+            self.bets_on_table.append(bet)
 
     def can_bet(self, bet_object: Bet) -> bool:
         """
