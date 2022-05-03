@@ -263,7 +263,7 @@ class Table(object):
             p.add_strategy_bets()
 
             if verbose:
-                bets = [f"{b.name}{b.sub_name}: ${b.bet_amount}" for b in p.bets_on_table]
+                bets = [f"{b.name}{b.winning_numbers}: ${b.bet_amount}" for b in p.bets_on_table]
                 if verbose:
                     print(f"{p.name}'s current bets: {bets}")
 

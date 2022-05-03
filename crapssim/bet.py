@@ -62,8 +62,6 @@ class Bet(ABC):
     ----------
     bet_amount: typing.SupportsFloat
         Wagered amount for the bet
-    sub_name : string
-        Sub-name, usually denotes number for a come/don't come bet
     payout_ratio : typing.SupportsFloat
         Ratio that bet pays out on a win
     removable : bool
@@ -72,7 +70,6 @@ class Bet(ABC):
 
     def __init__(self, bet_amount: typing.SupportsFloat):
         self.bet_amount: float = float(bet_amount)
-        self.sub_name: str = str()
         self.number_statuses: dict[int: str | None] = {x: None for x in range(2, 13)}
         self.payout_ratio: typing.SupportsFloat = float(1)
         self.removable: bool = True
@@ -215,12 +212,6 @@ class Come(PassLine):
         self.bet_allowed['On'] = True
         self.bet_allowed['Off'] = False
 
-    def update_bet(self, table: "Table") -> tuple[str | None, float]:
-        status, win_amount = super().update_bet(table)
-        if not self.pre_point and self.sub_name == "":
-            self.sub_name = "".join(str(e) for e in self.winning_numbers)
-        return status, win_amount
-
 
 # Pass Line and Come Bet Odds
 
@@ -243,7 +234,6 @@ class Odds(Bet):
         if isinstance(bet_object, PassLine):
             self.can_be_placed_point_off = False
 
-        self.sub_name: str = "".join(str(e) for e in bet_object.winning_numbers)
         self.winning_numbers: list[int] = bet_object.winning_numbers
         self.losing_numbers: list[int] = bet_object.losing_numbers
 
@@ -454,13 +444,6 @@ class DontCome(DontPass):
         self.bet_allowed['On'] = True
         self.bet_allowed['Off'] = False
 
-    def update_bet(self, table: "Table") -> tuple[str | None, float]:
-        status, win_amount = super().update_bet(table)
-        if not self.pre_point and self.sub_name == "":
-            self.sub_name = "".join(str(e) for e in self.losing_numbers)
-        return status, win_amount
-
-
 # Don't Pass/Don't Come lay odds
 
 
@@ -475,7 +458,6 @@ class LayOdds(Bet):
     """
     def __init__(self, bet_amount: typing.SupportsFloat, bet_object: Bet):
         super().__init__(bet_amount)
-        self.sub_name: str = "".join(str(e) for e in bet_object.losing_numbers)
         self.winning_numbers: list[int] = bet_object.winning_numbers
         self.losing_numbers: list[int] = bet_object.losing_numbers
 
