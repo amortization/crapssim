@@ -195,10 +195,23 @@ class Player:
                              payout_ratio=payout_ratio,
                              removable=removable)[0]
 
-    def num_bet(self, *bets_to_check: str) -> int:
+    def number_of_bets(self, name: str | None = None,
+                       names: list[str] | None = None,
+                       winning_number: int | None = None,
+                       winning_numbers: list[int] | None = None,
+                       losing_number: int | None = None,
+                       losing_numbers: list[int] | None = None,
+                       payout_ratio: float | None = None,
+                       removable: bool | None = None) -> int:
         """ returns the total number of bets in self.bets_on_table that match bets_to_check """
-        bet_names = [b.name for b in self.bets_on_table]
-        return sum([i in bets_to_check for i in bet_names])
+        return len(self.get_bets(name=name,
+                                 names=names,
+                                 winning_number=winning_number,
+                                 winning_numbers=winning_numbers,
+                                 losing_number=losing_number,
+                                 losing_numbers=losing_numbers,
+                                 payout_ratio=payout_ratio,
+                                 removable=removable))
 
     def remove_if_present(self, bet_name: str, bet_winning_numbers: str = None) -> None:
         if self.has_bet(name=bet_name):
