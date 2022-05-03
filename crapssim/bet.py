@@ -7,6 +7,8 @@ by a Player and are updated as the dice are rolled.
 import typing
 from abc import ABC
 
+from crapssim import Dice
+
 if typing.TYPE_CHECKING:
     from crapssim.table import Table
 
@@ -82,7 +84,17 @@ class Bet(ABC):
 
 
 class PassLine(Bet):
+    """
+    Bet placed on the Pass Line prior to the point being established.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+
+    """
     def __init__(self, bet_amount: float):
+
         super().__init__(bet_amount)
         self.name: str = "PassLine"
         self.winning_numbers: list[int] = [7, 11]
@@ -110,6 +122,14 @@ class PassLine(Bet):
 
 
 class Come(PassLine):
+    """
+    Bet placed on the Come after the point is established.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(float(bet_amount))
         self.name: str = "Come"
@@ -126,6 +146,16 @@ class Come(PassLine):
 # Pass Line and Come Bet Odds
 
 class Odds(Bet):
+    """
+    Bet placed with either a PassLine bet or Come bet that pays odds for the bet.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    bet_object : Bet
+        Come or PassLine bet object to tie the Odds to.
+    """
     def __init__(self, bet_amount: typing.SupportsFloat, bet_object: Bet):
         super().__init__(bet_amount)
 
@@ -139,26 +169,36 @@ class Odds(Bet):
         self.winning_numbers: list[int] = bet_object.winning_numbers
         self.losing_numbers: list[int] = bet_object.losing_numbers
 
-        if self.winning_numbers == [4] or self.winning_numbers == [10]:
+        if self.winning_numbers in [[4], [10]]:
             self.payout_ratio = 2 / 1
-        elif self.winning_numbers == [5] or self.winning_numbers == [9]:
+        elif self.winning_numbers in [[5], [9]]:
             self.payout_ratio = 3 / 2
-        elif self.winning_numbers == [6] or self.winning_numbers == [8]:
+        elif self.winning_numbers in [[6], [8]]:
             self.payout_ratio = 6 / 5
 
 
 # Place Bets on 4,5,6,8,9,10
 
 class Place(Bet):
+    """
+    Bet placed on a number after the point is established.
+    """
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
         # place bets are inactive when point is "Off"
         if table.point == "On":
             return super().update_bet(table)
-        else:
-            return None, 0
+        return None, 0
 
 
 class Place4(Place):
+    """
+    Place bet on the 4.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Place4"
@@ -168,6 +208,14 @@ class Place4(Place):
 
 
 class Place5(Place):
+    """
+    Place bet on the 5.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Place5"
@@ -177,6 +225,14 @@ class Place5(Place):
 
 
 class Place6(Place):
+    """
+    Place bet on the 6.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
         self.name: str = "Place6"
@@ -186,6 +242,14 @@ class Place6(Place):
 
 
 class Place8(Place):
+    """
+    Place bet on the 8.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Place8"
@@ -195,6 +259,14 @@ class Place8(Place):
 
 
 class Place9(Place):
+    """
+    Place bet on the 9.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Place9"
@@ -204,6 +276,14 @@ class Place9(Place):
 
 
 class Place10(Place):
+    """
+    Place bet on the 10.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: float):
         super().__init__(bet_amount)
         self.name: str = "Place10"
@@ -258,6 +338,14 @@ class Field(Bet):
 # Don't Pass and Don't Come bets
 
 class DontPass(Bet):
+    """
+    Bet placed on the Don't Pass bar prior to the point being established.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "DontPass"
@@ -289,6 +377,14 @@ class DontPass(Bet):
 
 
 class DontCome(DontPass):
+    """
+    Bet placed on the Don't Come bar prior to the point being established.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "DontCome"
@@ -306,6 +402,14 @@ class DontCome(DontPass):
 
 
 class LayOdds(Bet):
+    """
+    Odds placed on either a DontPass or DontCome bet.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat, bet_object: Bet):
         super().__init__(bet_amount)
         self.name: str = "LayOdds"
@@ -313,11 +417,11 @@ class LayOdds(Bet):
         self.winning_numbers: list[int] = bet_object.winning_numbers
         self.losing_numbers: list[int] = bet_object.losing_numbers
 
-        if self.losing_numbers == [4] or self.losing_numbers == [10]:
+        if self.losing_numbers in [[4], [10]]:
             self.payout_ratio = 1 / 2
-        elif self.losing_numbers == [5] or self.losing_numbers == [9]:
+        elif self.losing_numbers in [[5], [9]]:
             self.payout_ratio = 2 / 3
-        elif self.losing_numbers == [6] or self.losing_numbers == [8]:
+        elif self.losing_numbers in [[6], [8]]:
             self.payout_ratio = 5 / 6
 
 
@@ -325,6 +429,14 @@ class LayOdds(Bet):
 
 
 class Any7(Bet):
+    """
+    Bet that a 7 is rolled.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Any7"
@@ -334,6 +446,14 @@ class Any7(Bet):
 
 
 class Two(Bet):
+    """
+    Bet that a 2 is rolled.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Two"
@@ -343,6 +463,14 @@ class Two(Bet):
 
 
 class Three(Bet):
+    """
+    Bet that a 3 is rolled.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Three"
@@ -352,6 +480,14 @@ class Three(Bet):
 
 
 class Yo(Bet):
+    """
+    Bet that an 11 is rolled.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Yo"
@@ -361,6 +497,14 @@ class Yo(Bet):
 
 
 class Boxcars(Bet):
+    """
+    Bet that a 12 is rolled.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Boxcars"
@@ -370,6 +514,14 @@ class Boxcars(Bet):
 
 
 class AnyCraps(Bet):
+    """
+    Bet that any craps number (2, 3, 12) is rolled.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "AnyCraps"
@@ -379,6 +531,14 @@ class AnyCraps(Bet):
 
 
 class CAndE(Bet):
+    """
+    Bet that any craps number (2, 3, 12) or 11 is rolled.
+
+    Parameters
+    ----------
+    bet_amount : typing.SupportsFloat
+        Wagered amount for the bet
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "CAndE"
@@ -406,6 +566,9 @@ class CAndE(Bet):
 
 class HardWay(Bet):
     """
+    Bet that a number is rolled with the dice faces matching before a
+    7 or the non-matching number is rolled.
+
     Attributes
     ----------
     number : int
@@ -433,6 +596,9 @@ class HardWay(Bet):
 
 
 class Hard4(HardWay):
+    """
+    Bet that two twos are rolled prior to a four in another way, or a seven.
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Hard4"
@@ -442,6 +608,9 @@ class Hard4(HardWay):
 
 
 class Hard6(HardWay):
+    """
+    Bet that two threes are rolled prior to a six in another way, or a seven.
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Hard6"
@@ -451,6 +620,9 @@ class Hard6(HardWay):
 
 
 class Hard8(HardWay):
+    """
+    Bet that two fours are rolled prior to a eight in another way, or a seven.
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Hard8"
@@ -460,6 +632,9 @@ class Hard8(HardWay):
 
 
 class Hard10(HardWay):
+    """
+    Bet that two fives are rolled prior to a ten in another way, or a seven.
+    """
     def __init__(self, bet_amount: typing.SupportsFloat):
         super().__init__(bet_amount)
         self.name: str = "Hard10"
