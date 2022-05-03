@@ -69,7 +69,10 @@ class Player:
             self.sit_at_table(table)
 
         self.bets_on_table: list[Bet] = []
-        self.total_bet_amount: float = 0.0
+
+    @property
+    def total_bet_amount(self) -> float:
+        return sum(bet.bet_amount for bet in self.bets_on_table)
 
     def sit_at_table(self, table: "Table"):
         table.add_player(self)
@@ -78,29 +81,35 @@ class Player:
         if self.table is None:
             raise NoTableError
 
-        if not bet_object.bet_allowed[self.table.point.status]:
+        if self.can_bet(bet_object) is False:
             return
 
-        if self.bankroll >= bet_object.bet_amount:
-            self.bankroll -= bet_object.bet_amount
+        self.bankroll -= bet_object.bet_amount
 
-            if (bet_object.name, bet_object.winning_numbers) in\
-                    [(b.name, b.winning_numbers) for b in self.bets_on_table]:
-                existing_bet: Bet = self.get_bet(bet_object.name, bet_object.winning_numbers)
-                existing_bet.bet_amount += bet_object.bet_amount
-            else:
-                self.bets_on_table.append(bet_object)
+        if (bet_object.name, bet_object.winning_numbers) in\
+                [(b.name, b.winning_numbers) for b in self.bets_on_table]:
+            existing_bet: Bet = self.get_bet(bet_object.name, bet_object.winning_numbers)
+            existing_bet.bet_amount += bet_object.bet_amount
+        else:
+            self.bets_on_table.append(bet_object)
 
-            self.total_bet_amount += bet_object.bet_amount
+    def can_bet(self, bet_object):
+        can_bet = True
+        if not bet_object.bet_allowed[self.table.point.status]:
+            can_bet = False
+        if self.bankroll < bet_object.bet_amount:
+            can_bet = True
+        return can_bet
 
     def remove(self, bet_object: Bet) -> None:
         if bet_object in self.bets_on_table and bet_object.removable:
             self.bankroll += bet_object.bet_amount
             self.bets_on_table.remove(bet_object)
-            self.total_bet_amount -= bet_object.bet_amount
 
     def has_bet(self, *bets_to_check: str) -> bool:
-        """ returns True if bets_to_check and self.bets_on_table has at least one thing in common """
+        """
+        returns True if bets_to_check and self.bets_on_table has at least one thing in common
+        """
         bet_names = {b.name for b in self.bets_on_table}
         return bool(bet_names.intersection(bets_to_check))
 
@@ -111,7 +120,8 @@ class Player:
             bet_name_list: list[str] = [b.name for b in self.bets_on_table]
             ind: int = bet_name_list.index(bet_name)
         else:
-            bet_name_winning_numbers_list: list[list[str]] = [[b.name, b.winning_numbers] for b in self.bets_on_table]
+            bet_name_winning_numbers_list: list[list[str]] =\
+                [[b.name, b.winning_numbers] for b in self.bets_on_table]
             ind = bet_name_winning_numbers_list.index([bet_name, bet_winning_numbers])
         return self.bets_on_table[ind]
 
@@ -143,18 +153,15 @@ class Player:
 
             if status == "win":
                 self.bankroll += win_amount + b.bet_amount
-                self.total_bet_amount -= b.bet_amount
                 self.bets_on_table.remove(b)
                 if verbose:
                     print(f"{self.name} won ${win_amount} on {b.name} bet!")
             elif status == "lose":
-                self.total_bet_amount -= b.bet_amount
                 self.bets_on_table.remove(b)
                 if verbose:
                     print(f"{self.name} lost ${b.bet_amount} on {b.name} bet.")
             elif status == "push":
                 self.bankroll += b.bet_amount
-                self.total_bet_amount -= b.bet_amount
                 self.bets_on_table.remove(b)
                 if verbose:
                     print(f"{self.name} pushed ${b.bet_amount} on {b.name} bet.")
