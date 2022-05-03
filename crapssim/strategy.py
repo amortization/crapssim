@@ -52,6 +52,35 @@ def pass_line(player: 'Player', table: 'Table') -> None:
         player.bet(PassLine(player.unit))
 
 
+def _odds_multiplier_dict(multiplier: typing.SupportsInt | str = 1) -> dict[int, int]:
+    """
+    Given a multiplier identifier ('345' or int) return a dictionary
+    with the multipliers for a given point number.
+
+    Parameters
+    ----------
+    multiplier : str | typing.SupportsInt
+        Multiplier identifier, must be '345' or an Integer.
+
+    Returns
+    -------
+    dict[int, int]
+        Dictionary of the point and the multiplier for that point.
+    """
+    if multiplier == '345':
+        return {4: 3,
+                5: 4,
+                6: 5,
+                8: 5,
+                9: 4,
+                10: 3}
+    elif (isinstance(multiplier, str) and multiplier.isdigit()) or \
+            isinstance(multiplier, typing.SupportsInt):
+        return {x: int(multiplier) for x in range(4, 11)}
+    else:
+        raise NotImplementedError
+
+
 def pass_line_odds(player: 'Player', table: 'Table', mult: int | str = 1) -> None:
     """ If the point is off place a bet on the Pass Line. If the point is on, bet the Pass Line Odds.
 
@@ -72,18 +101,8 @@ def pass_line_odds(player: 'Player', table: 'Table', mult: int | str = 1) -> Non
     pass_line(player, table)
 
     # Pass line odds
-    if mult == "345":
-        if table.point == "On":
-            if table.point.number in [4, 10]:
-                mult = 3
-            elif table.point.number in [5, 9]:
-                mult = 4
-            elif table.point.number in [6, 8]:
-                mult = 5
-    elif (isinstance(mult, str) and mult.isdigit()) or isinstance(mult, typing.SupportsInt):
-        mult = int(mult)
-    else:
-        raise NotImplementedError
+    if table.point == 'On':
+        mult = _odds_multiplier_dict(mult)[table.point.number]
 
     if (
             table.point == "On"
