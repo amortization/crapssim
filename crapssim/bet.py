@@ -78,10 +78,7 @@ class Bet(ABC):
 
         return status, win_amount
 
-
-"""
-Pass Line and Come bets
-"""
+# Pass Line and Come bets
 
 
 class PassLine(Bet):
@@ -126,10 +123,7 @@ class Come(PassLine):
         return status, win_amount
 
 
-"""
-Pass Line/Come bet odds
-"""
-
+# Pass Line and Come Bet Odds
 
 class Odds(Bet):
     def __init__(self, bet_amount: typing.SupportsFloat, bet_object: Bet):
@@ -153,10 +147,7 @@ class Odds(Bet):
             self.payout_ratio = 6 / 5
 
 
-"""
-Place Bets on 4,5,6,8,9,10
-"""
-
+# Place Bets on 4,5,6,8,9,10
 
 class Place(Bet):
     def update_bet(self, table: "Table") -> tuple[str | None, float]:
@@ -221,10 +212,7 @@ class Place10(Place):
         self.payout_ratio: float = float(9 / 5)
 
 
-"""
-Field bet
-"""
-
+# Field bet
 
 class Field(Bet):
     """
@@ -267,10 +255,7 @@ class Field(Bet):
         return status, win_amount
 
 
-"""
-Don't pass and Don't come bets
-"""
-
+# Don't Pass and Don't Come bets
 
 class DontPass(Bet):
     def __init__(self, bet_amount: typing.SupportsFloat):
@@ -317,9 +302,7 @@ class DontCome(DontPass):
         return status, win_amount
 
 
-"""
-Don't pass/Don't come lay odds
-"""
+# Don't Pass/Don't Come lay odds
 
 
 class LayOdds(Bet):
@@ -338,9 +321,7 @@ class LayOdds(Bet):
             self.payout_ratio = 5 / 6
 
 
-"""
-Center-table Bets
-"""
+# Center-table Bets
 
 
 class Any7(Bet):
