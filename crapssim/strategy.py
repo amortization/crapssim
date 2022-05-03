@@ -201,17 +201,17 @@ def place(player: 'Player', table: 'Table', skip_point: bool = True,
     # Move the bets off the point number if it shows up later
     if skip_point and table.point == "On":
         if player.has_bet(name="Place4") and table.point.number == 4:
-            player.remove(player.get_bet(name="Place4"))
+            player.remove_bet(player.get_bet(name="Place4"))
         if player.has_bet(name="Place5") and table.point.number == 5:
-            player.remove(player.get_bet(name="Place5"))
+            player.remove_bet(player.get_bet(name="Place5"))
         if player.has_bet(name="Place6") and table.point.number == 6:
-            player.remove(player.get_bet(name="Place6"))
+            player.remove_bet(player.get_bet(name="Place6"))
         if player.has_bet(name="Place8") and table.point.number == 8:
-            player.remove(player.get_bet(name="Place8"))
+            player.remove_bet(player.get_bet(name="Place8"))
         if player.has_bet(name="Place9") and table.point.number == 9:
-            player.remove(player.get_bet(name="Place9"))
+            player.remove_bet(player.get_bet(name="Place9"))
         if player.has_bet(name="Place10") and table.point.number == 10:
-            player.remove(player.get_bet(name="Place10"))
+            player.remove_bet(player.get_bet(name="Place10"))
 
 
 def place68(player: 'Player', table: 'Table') -> None:
@@ -363,14 +363,14 @@ def place68_2come(player: 'Player', table: 'Table') -> None:
 
     if 6 in pass_come_winning_numbers:
         if player.has_bet(name="Place6"):
-            player.remove(player.get_bet(name="Place6"))
+            player.remove_bet(player.get_bet(name="Place6"))
         if 5 not in current_numbers:
             player.bet(Place5(player.unit))
         elif 9 not in current_numbers:
             player.bet(Place9(player.unit))
     elif 8 in pass_come_winning_numbers:
         if player.has_bet(name="Place8"):
-            player.remove(player.get_bet(name="Place8"))
+            player.remove_bet(player.get_bet(name="Place8"))
         if 5 not in current_numbers:
             player.bet(Place5(player.unit))
         elif 9 not in current_numbers:
@@ -451,9 +451,9 @@ def hammerlock(player: 'Player', table: 'Table', mode: str | None = None) -> Non
         if table.point == "On" and has_place68 and place_nums != {6, 8}:
             # assume that a place 6/8 has won
             if player.has_bet(name="Place6"):
-                player.remove(player.get_bet(name="Place6"))
+                player.remove_bet(player.get_bet(name="Place6"))
             if player.has_bet(name="Place8"):
-                player.remove(player.get_bet(name="Place8"))
+                player.remove_bet(player.get_bet(name="Place8"))
             mode = "place_inside"
             place(player, table, numbers={5, 6, 8, 9}, skip_point=False)
         else:
@@ -613,11 +613,11 @@ def dice_doctor(player: 'Player', table: 'Table', progression: int = 0) -> None:
 #                 if table.bet_update_info[player][bet.name]["status"] == "win":
 #                     # print("place6 mode: {}".format(strategy_info["mode6"]))
 #                     if strategy_info["mode6"] == "press":
-#                         player.remove(bet)
+#                         player.remove_bet(bet)
 #                         player.bet(Place6(2 * bet.bet_amount))
 #                         strategy_info["mode6"] = "regress"
 #                     elif strategy_info["mode6"] == "regress":
-#                         player.remove(bet)
+#                         player.remove_bet(bet)
 #                         player.bet(Place6(6 / 5 * unit))
 #                         strategy_info["mode6"] = "collect"
 #                     elif strategy_info["mode6"] == "collect":
@@ -634,11 +634,11 @@ def dice_doctor(player: 'Player', table: 'Table', progression: int = 0) -> None:
 #                 if table.bet_update_info[player][bet.name]["status"] == "win":
 #                     # print("place8 mode: {}".format(strategy_info["mode8"]))
 #                     if strategy_info["mode8"] == "press":
-#                         player.remove(bet)
+#                         player.remove_bet(bet)
 #                         player.bet(Place8(2 * bet.bet_amount))
 #                         strategy_info["mode8"] = "regress"
 #                     elif strategy_info["mode8"] == "regress":
-#                         player.remove(bet)
+#                         player.remove_bet(bet)
 #                         player.bet(Place8(6 / 5 * unit))
 #                         strategy_info["mode8"] = "collect"
 #                     elif strategy_info["mode8"] == "collect":
@@ -676,12 +676,12 @@ def place68_dont_come2odds(player: 'Player', table: 'Table') -> None:
 
     if 6 in dont_come_losing_numbers:
         if player.has_bet(name="Place6"):
-            player.remove(player.get_bet(name="Place6"))
+            player.remove_bet(player.get_bet(name="Place6"))
         if 5 not in current_numbers:
             player.bet(Place5(player.unit))
     elif 8 in dont_come_losing_numbers:
         if player.has_bet(name="Place8"):
-            player.remove(player.get_bet(name="Place8"))
+            player.remove_bet(player.get_bet(name="Place8"))
         if 9 not in current_numbers:
             player.bet(Place9(player.unit))
 

@@ -100,7 +100,7 @@ class Player:
             can_bet = False
         return can_bet
 
-    def remove(self, bet_object: Bet) -> None:
+    def remove_bet(self, bet_object: Bet) -> None:
         if bet_object in self.bets_on_table and bet_object.removable:
             self.bankroll += bet_object.bet_amount
             self.bets_on_table.remove(bet_object)
@@ -215,8 +215,8 @@ class Player:
 
     def remove_if_present(self, bet_name: str, bet_winning_numbers: str = None) -> None:
         if self.has_bet(name=bet_name):
-            self.remove(self.get_bet(name=bet_name,
-                                     winning_numbers=bet_winning_numbers))
+            self.remove_bet(self.get_bet(name=bet_name,
+                                         winning_numbers=bet_winning_numbers))
 
     def add_strategy_bets(self) -> None:
         """ Implement the given betting strategy """
