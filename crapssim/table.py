@@ -277,7 +277,7 @@ class Table(object):
         """
         self.bet_update_info = {}
         for p in self.players:
-            info = p.update_bet(verbose)
+            info = p.update_bets(verbose)
             self.bet_update_info[p] = info
 
     def update_table(self, verbose: bool = False) -> None:

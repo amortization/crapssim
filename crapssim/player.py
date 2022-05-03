@@ -243,7 +243,7 @@ class Player:
         if self.bet_strategy:
             self.bet_strategy(self, self.table, **self.strategy_info)
 
-    def update_bet(self, verbose: bool = False) -> \
+    def update_bets(self, verbose: bool = False) -> \
             dict[str, dict[str, float | str | None]]:
         """
         Update all of this player's bets on table with the tables dice roll.
